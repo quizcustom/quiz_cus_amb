@@ -122,7 +122,7 @@ button:hover { background: #1e40af; }
 </head>
 <body>
 <div class="container">
-  <div class="version-bar" style="text-align:center; font-size:14px; color:#555; margin-bottom:8px; font-weight:bold;">Version: 2025-09-28</div>
+  <div class="version-bar" style="text-align:center; font-size:14px; color:#555; margin-bottom:8px; font-weight:bold;">version 1.0.0</div>
 
   <!-- Question Sets -->
   <div class="box-level1">
@@ -373,16 +373,8 @@ function showAllQuestions(){
 }
 
 function refreshQuestions(){
-  // reset đáp án đã chọn giống như showAllQuestions
+  // Chỉ xóa đáp án đã chọn, giữ nguyên số lượng câu hỏi đang hiển thị
   selectedAnswers = {};
-  document.getElementById('startQ').value = 1;
-  // Lấy các set đang chọn
-  const selectedSets = Array.from(document.querySelectorAll('#setsBox input:checked')).map(cb => cb.value);
-  // Tính tổng số câu của các set được chọn
-  let total = 0;
-  selectedSets.forEach(set => total += (questionBanks[set] || []).length);
-  document.getElementById('endQ').value = total;
-  document.getElementById('numQ').value = total;
   renderQuestions();
 }
 
@@ -460,7 +452,6 @@ function exportFlagged(){
 document.getElementById('startQ').value = 1;
 document.getElementById('numQ').value = 1;
 </script>
-// Hiển thị giờ hiện tại cho version
 
 </body>
 </html>
