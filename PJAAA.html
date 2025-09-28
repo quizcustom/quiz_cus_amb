@@ -282,12 +282,12 @@ function renderQuestions() {
   const selectedSets = Array.from(document.querySelectorAll('#setsBox input:checked')).map(cb => cb.value);
   allQuestions = [];
   selectedSets.forEach(set => allQuestions = allQuestions.concat(questionBanks[set] || []));
-  if (!fixedMode) allQuestions.sort(() => Math.random() - 0.5);
-
   let shown = [];
   if (showOnly) {
+    // Không random khi chỉ show flagged
     shown = allQuestions.filter(q => flagStates[q.q]);
   } else {
+    if (!fixedMode) allQuestions.sort(() => Math.random() - 0.5);
     const start = parseInt(document.getElementById('startQ').value) || 1;
     const end = parseInt(document.getElementById('endQ').value) || allQuestions.length;
     let numInput = document.getElementById('numQ');
@@ -394,15 +394,20 @@ function loadSelectedSets(){
 function clearAllFlags(){Object.keys(flagStates).forEach(k=>flagStates[k]=false); renderQuestions();}
 
 function exportFlagged(){
-  const flaggedQs=[];
-  document.querySelectorAll(".question").forEach(div=>{
-    const flagCheckbox=div.querySelector(".flag-checkbox");
-    if(flagCheckbox && flagCheckbox.checked){
-      const qText=div.querySelector("p").innerText.replace(/^Q\d+: /,"");
-      const options=[...div.querySelectorAll(".option input")].map(inp=>inp.parentNode.textContent.trim());
-      const answer=[...div.querySelectorAll(".option input")].find(inp=>inp.parentNode.classList.contains("correct"));
-      const ansKey=answer?answer.value:"";
-      flaggedQs.push([qText,...options,ansKey]);
+  // Lấy danh sách câu hỏi đã flag từ flagStates
+  const flaggedQs = [];
+  Object.keys(flagStates).forEach(qText => {
+    if(flagStates[qText]) {
+      // Tìm câu hỏi gốc trong questionBanks
+      let found = null;
+      for(const set in questionBanks) {
+        found = questionBanks[set].find(q => q.q === qText);
+        if(found) break;
+      }
+      if(found) {
+        const options = found.options.map(opt => opt.text);
+        flaggedQs.push([found.q, ...options, found.answer]);
+      }
     }
   });
 
