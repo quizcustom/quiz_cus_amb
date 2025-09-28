@@ -305,9 +305,8 @@ function renderQuestions() {
     // Chỉ shuffle flaggedRange để hiển thị, không ảnh hưởng đến vị trí start/end
     shown = flaggedRange.length > 1 ? [...flaggedRange].sort(() => Math.random() - 0.5) : flaggedRange;
   } else {
-    // Shuffle allQuestions nếu không fixedMode
-    let questionsToShow = fixedMode ? allQuestions : [...allQuestions].sort(() => Math.random() - 0.5);
-    shown = questionsToShow.slice(start - 1, end).slice(0, num);
+    // Luôn lấy theo thứ tự gốc, không shuffle!
+    shown = allQuestions.slice(start - 1, end).slice(0, num);
   }
 
   // Cập nhật số câu hiển thị / tổng số câu
