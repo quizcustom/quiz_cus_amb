@@ -122,7 +122,7 @@ button:hover { background: #1e40af; }
 </head>
 <body>
 <div class="container">
-  <div class="version-bar" style="text-align:center; font-size:14px; color:#555; margin-bottom:8px; font-weight:bold;">version 1.0.2</div>
+  <div class="version-bar" style="text-align:center; font-size:14px; color:#555; margin-bottom:8px; font-weight:bold;">version 1.0.3</div>
 
   <!-- Question Sets -->
   <div class="box-level1">
@@ -300,8 +300,11 @@ function renderQuestions() {
   if (showOnly) {
     // Lấy flagged theo thứ tự gốc (không random thứ tự câu hỏi)
     let flagged = allQuestions.filter(q => flagStates[q.q]);
-    // start/end/num luôn là vị trí trong danh sách flagged (không shuffle trước khi cắt)
-    let flaggedRange = flagged.slice(start - 1, end).slice(0, num);
+    // Clamp start/end cho flagged để không bị out of range
+    let flaggedLen = flagged.length;
+    let s = Math.max(1, Math.min(start, flaggedLen));
+    let e = Math.max(s, Math.min(end, flaggedLen));
+    let flaggedRange = flagged.slice(s - 1, e).slice(0, num);
     // Chỉ shuffle flaggedRange để hiển thị, không ảnh hưởng đến vị trí start/end
     shown = flaggedRange.length > 1 ? [...flaggedRange].sort(() => Math.random() - 0.5) : flaggedRange;
   } else {
