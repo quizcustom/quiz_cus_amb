@@ -173,6 +173,7 @@ button:hover { background: #1e40af; }
 // ======================= Load CSV from files =======================
 let questionBanks = {};
 let flagStates = {};
+let selectedAnswers = {}; // Lưu đáp án đã chọn cho từng câu hỏi
 
 function parseCSV(text, setName){
     const lines = text.trim().split("\n");
@@ -323,12 +324,18 @@ function renderQuestions() {
     div.appendChild(qText);
 
     let opts = [...q.options];
-    if (!fixedMode) opts.sort(() => Math.random() - 0.5);
-    opts.forEach(opt => {
+    // Lưu lại thứ tự gốc để export đúng, chỉ random khi không fixedMode và không show flagged only
+    let renderOpts = (!fixedMode && !document.getElementById('showFlaggedOnly').checked) ? opts.sort(() => Math.random() - 0.5) : opts;
+    renderOpts.forEach(opt => {
       const optDiv = document.createElement("label");
       optDiv.className = "option";
-      optDiv.innerHTML = `<input type="radio" name="q${i}" value="${opt.key}"> ${opt.text}`;
-      optDiv.onclick = () => handleAnswer(optDiv, opt.key, q.answer, i);
+      // Nếu đã chọn đáp án thì checked
+      const checked = selectedAnswers[q.q] === opt.key ? "checked" : "";
+      optDiv.innerHTML = `<input type="radio" name="q_${q.q}" value="${opt.key}" ${checked}> ${opt.text}`;
+      optDiv.onclick = () => {
+        selectedAnswers[q.q] = opt.key;
+        handleAnswer(optDiv, opt.key, q.answer, i);
+      };
       div.appendChild(optDiv);
     });
 
@@ -405,7 +412,11 @@ function exportFlagged(){
         if(found) break;
       }
       if(found) {
-        const options = found.options.map(opt => opt.text);
+        // Export đúng thứ tự A B C và đáp án là key (A/B/C)
+        const options = ["A","B","C"].map(k => {
+          const o = found.options.find(opt => opt.key === k);
+          return o ? o.text : "";
+        });
         flaggedQs.push([found.q, ...options, found.answer]);
       }
     }
