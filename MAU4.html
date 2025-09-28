@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Quiz Practice - 4 Sets</title>
+<style>
+body { font-family: Arial, sans-serif; display: flex; justify-content: center; padding: 20px; background: #f9fafb; }
+.container { width: 90%; max-width: 1000px; }
+.box-level1 { border: 2px solid #333; border-radius: 12px; padding: 15px; margin-bottom: 20px; background: #fff; }
+.box-level1 h2 { margin: 0 0 10px 0; font-size: 18px; cursor: pointer; user-select: none; }
+.box-content { margin-top: 10px; }
+.checkbox-level2 { display: block; width: 100%; padding: 8px 12px; margin: 4px 0; border: 1px solid #aaa; border-radius: 20px; cursor: pointer; transition: all 0.2s; box-sizing: border-box; }
+.checkbox-level2:hover { transform: scale(0.995); background-color: #f1f5f9; }
+.controls-row { display: flex; justify-content: space-between; margin-bottom: 10px; }
+.controls-row label { margin-right: 10px; }
+.button-row { display: flex; justify-content: space-between; margin: 10px 0; gap: 10px; flex-wrap: wrap; }
+button { padding: 6px 14px; border: none; border-radius: 8px; cursor: pointer; background: #2563eb; color: white; font-weight: bold; }
+button:hover { background: #1e40af; }
+.question { margin-bottom: 20px; padding: 15px; background: #fff; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+.question p { font-weight: bold; margin: 0 0 10px 0; }
+.option { display: block; margin: 6px 0; padding: 8px; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
+.option input[type="radio"] { margin-right: 10px; }
+.option:hover { background: #f1f5f9; }
+.option.correct { background: #d1fae5; border: 1px solid #10b981; }
+.option.wrong { background: #fee2e2; border: 1px solid #ef4444; }
+.collapsible { max-height: 200px; overflow-y: auto; transition: max-height 0.3s ease; }
+.collapsed { display: none; }
+.flag-checkbox { margin-right: 10px; cursor: pointer; }
+.flag-container { margin-bottom: 10px; display: flex; align-items: center; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Question Sets -->
+  <div class="box-level1">
+
+    <h2 onclick="toggleBox('setsBox')">Question Sets ▼</h2>
+    <div id="setsBox" class="box-content collapsible"></div>
+    <div class="button-row">
+      <button onclick="loadSelectedSets()">Load Selected Set</button>
+      <!-- Import CSV -->
+      <input type="file" id="importCsvInput" accept=".csv" style="margin-top:10px;">
+      <button onclick="importCSVFile()" style="margin-top:5px;">Import CSV</button>
+
+    </div>
+  </div>
+
+  <!-- Question Range Selection -->
+  <div class="box-level1">
+    <h2>Question Range Selection</h2>
+    <label class="checkbox-level2"><input type="checkbox" id="fixedMode"> Fixed Mode</label>
+    <label class="checkbox-level2"><input type="checkbox" id="instantMode"> Instant Check Mode</label>
+    <div class="controls-row">
+      <label>Start Question: <input type="number" id="startQ" value="1" min="1"></label>
+      <label>End Question: <input type="number" id="endQ" value="1" min="1"></label>
+      <label>Num. Questions: <input type="number" id="numQ" value="1" min="1"></label>
+    </div>
+    <div class="button-row">
+      <button onclick="showAllQuestions()">All Questions</button>
+      <button onclick="refreshQuestions()">Refresh</button>
+    </div>
+  </div>
+
+  <!-- Flag Controls -->
+  <div class="box-level1">
+    <h2>Flag Controls</h2>
+    <label class="checkbox-level2"><input type="checkbox" id="showFlaggedOnly" onchange="renderQuestions()"> Show Flagged Only</label>
+    <div class="button-row">
+      <button onclick="exportFlagged()">Export Flagged Questions</button>
+      <button onclick="clearAllFlags()">Clear All Flags</button>
+    </div>
+  </div>
+  <div id="questionCount" style="margin-top:5px; font-weight:bold;"></div>
+
+  <!-- Questions Display -->
+  <div id="questions"></div>
+</div>
+
+
+<script>
+// ======================= CSV Data =======================
+const csvDataSet1 = `Question,Option A,Option B,Option C,Answer
+"A dry powder extinguisher is coloured.","green","red","blue","C"
+"Neither oil nor grease should be used as a lubricant on couplings or pipelines carrying.","Oxygen","Kerosene","Nitrogen","A"
+"Which pictorial projection shows one face in true elevation and line of depth normally draw at 30° or 45° to the horizontal?","Oblique","Perspective","Isometric","A"
+"If a design amendment is made on a drawing.","a new issue number and date must be allocated to the drawing.","the old issue number is retained, with the amendment date added.","no change in issue number or date is necessary.","A"
+"The British Standard for Engineering Drawings is.","BS 308","BS 306","BS 307","A"
+"P.C.D. is an abbreviation for.","Pitch Circle Diameter","Pitch Cord Diameter","Precision Circle Dimension","A"
+"Drawing numbers are.","the same as serial numbers.","changed after each drawing amended after May 28, 1999.","unique to each drawing","C"
+"Hatching lines are usually drawn at:","60°","30°","45°","C"
+"The scale of an engineering drawing is shown as 1 : 4. This indicates it is.","drawn to a quarter","drawn to scale","drawn four times larger","A"
+"An orthographic projection usually shows.","one, three-dimensional view of an object.","a pictorial view of the object.","three, two-dimensional views of an object.","C"`;
+
+const csvDataSet2 = `Question,Option A,Option B,Option C,Answer
+"When dimensioning a drawing, the dimension lines should be.","the minimum number of dimensions necessary to enable the component to be manufactured.","as many dimensions as possible.","only size dimensions.","A"
+"'PFD' on an engineering drawing would indicate.","dye penetrant check.","ultra-sonic test.","repair and recondition.","A"
+"Which type of extinguisher can be used for an electric fire?","Foam.","Water.","CO2.","A"
+"S.W.G. is an abbreviation for.","Standard Wire Gauge.","Screw Width Gauge.","Standard Water Gauge.","C"
+"If you are unable to identify a structure 'classification' as either primary or secondary, what action should you adopt?","Grade it as 'secondary'.","Upgrade it to 'primary'.","Paint it red and stamp it as 'tertiary'.","A"
+"What colour is used to indicate a tertiary structure on a diagram or drawing?","Red.","Green.","Yellow.","B"
+"Which parts of the aircraft are classified secondary structures?","Highly stressed parts but if damaged will not cause failure of the aircraft.","Highly stressed parts and if damaged may cause failure of the aircraft and loss of life.","Lightly stressed parts such as fairings, wheel shields and minor component brackets etc.","B"
+"Where are correct layout, dimensioning, numbering and reference procedures for engineering drawing are to be found?","BS 31.","BS 1916.","BS 308.","A"
+"10 : 1 on an engineering drawing indicates.","the drawing is full size.","the drawing is one tenth full size.","the drawing is ten times full size.","C"
+"Lines known as short dashes (thin) are used on drawings to indicate.","hidden detail.","visible outlines.","cutting revolved.","C"`;
+
+const csvDataSet3 = `Question,Option A,Option B,Option C,Answer
+"Break lines are used.","to show where components are expected to break.","in sectional drawing.","where it would be inconvenient (because of limited space) to draw long lengths of the same section.","C"
+"An oblique projection.","is the same as an isometric projection.","has one view looking directly at one face with the lines representing depth drawn at 90°.","has one view looking directly at one face with the lines representing depth drawn at a constant angle.","C"
+"A drawing in which the subassemblies or parts are shown as brought together on the aircraft is called.","an installation drawing.","a detail drawing.","a sectional drawing.","A"
+"The colour of CO2 type fire extinguisher is.","red.","black.","green.","B"
+"A thread on a drawing is labeled ½-20 UNF - 1B. The thread is","either external or internal, depending on the application.","external.","internal.","C"
+"NTS on a drawing stands for.","Not True Scale.","No Tolerance System.","Not To Scale.","C"
+"A hydraulic system schematic drawing would indicate the.","type and quantity of the hydraulic fluid.","specific location of the individual components within the aircraft.","direction of fluid flow through the system.","C"
+"Which statement is true regarding an orthographic projection?.","There are always at least two views.","It could have as many as eight views.","One-view, two-view, and three-view drawings are the most common.","C"
+"A line used to show an edge which is not visible is a.","break line.","phantom line.","hidden line.","C"
+"One purpose for schematic diagrams is to show the.","size and shape of components within a system.","functional location of components within a system.","physical location of components within a system.","B"`;
+
+const csvDataSet4 = `Question,Option A,Option B,Option C,Answer
+"What type of line is normally used in a mechanical drawing or blueprint to represent an edge or object not visible to the viewer?","Alternate short and long light dashes.","Medium-weight dashed line.","Light solid line.","B"
+"A specific measured distance from the datum or some other point identified by the manufacturer, to a point in or on the aircraft is called a.","zone number","station number","specification number.","B"
+"In a first angle orthographic projection the plan view is placed.","above the front elevation","below the side elevation","below the front elevation.","C"
+"When a cutting plane on a drawing cuts a web longitudinally, the web is.","sectioned the same as the rest of the view","not sectioned","sectioned with different direction of hatch.","A"
+"Which type of extinguisher can be used for engine fire?","CO2.","BCF.","Water.","A"
+"The letter A.F.D. in a circle stamped on a material indicates that it has.","been anodic flaw detected.","been annealed fired and doped.","an across flats diameter bolt.","A"
+"Where would Zone 324 be found in ATA 100?","Between rear spar of wing and trailing edge of wing.","Tip of horizontal stabilizer.","Fwd of the wing rear spar.","B"
+"The latest drawing is identified by the.","issue number.","amendment number.","date.","A"
+"Tolerances are classified in two ways, these are.","Dimensional and isometric.","Upper and lower.","Dimensional and geometric.","C"
+"The maximum permissible bow in a steel tube is.","0.319444444","0.180555556","0.458333333","C"`;
+
+// ======================= Parse CSV =======================
+let questionBanks = {};
+let allQuestions = [];
+let flagStates = {}; // lưu trạng thái flag toàn bộ câu
+
+function parseCSV(csv,setName){
+  questionBanks[setName] = [];
+  csv.trim().split(/\r?\n/).slice(1).forEach(row=>{
+    const cols=row.split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/);
+    const qObj = {
+      q: cols[0].replace(/^"|"$/g,""),
+      options: [
+        {key:"A",text:cols[1].replace(/^"|"$/g,"")},
+        {key:"B",text:cols[2].replace(/^"|"$/g,"")},
+        {key:"C",text:cols[3].replace(/^"|"$/g,"")}
+      ],
+      answer: cols[4].replace(/^"|"$/g,"")
+    };
+    questionBanks[setName].push(qObj);
+    flagStates[qObj.q] = flagStates[qObj.q] || false; // init flag
+  });
+}
+
+// Parse all sets
+parseCSV(csvDataSet1,"Set 1");
+parseCSV(csvDataSet2,"Set 2");
+parseCSV(csvDataSet3,"Set 3");
+parseCSV(csvDataSet4,"Set 4");
+
+// ======================= Functions =======================
+function toggleBox(id){document.getElementById(id).classList.toggle("collapsed");}
+
+function updateEndQuestion() {
+  const selectedSets = Array.from(document.querySelectorAll('#setsBox input:checked')).map(cb => cb.value);
+  let total = 0;
+  selectedSets.forEach(set => total += (questionBanks[set] || []).length);
+
+  const startInput = document.getElementById('startQ');
+  const endInput = document.getElementById('endQ');
+
+  let start = parseInt(startInput.value) || 1;
+  let end = parseInt(endInput.value) || start;
+
+  // Giới hạn start
+  if (start < 1) start = 1;
+  if (start > total) start = total;
+  startInput.value = start;
+
+  // Giới hạn end
+  if (end < start) end = start;
+  if (end > total) end = total;
+  endInput.min = start;
+  endInput.max = total;
+  endInput.value = end;
+}
+
+function renderSets(){
+  const container=document.getElementById('setsBox'); 
+  container.innerHTML="";
+  Object.keys(questionBanks).forEach(set=>{
+    const lbl=document.createElement("label"); 
+    lbl.className="checkbox-level2";
+    // Thêm số câu vào tên set
+    lbl.innerHTML=`<input type="checkbox" value="${set}"> ${set} (${questionBanks[set].length} questions)`;
+    lbl.onclick=()=>updateEndQuestion();
+    container.appendChild(lbl);
+  });
+}
+
+// ======================= Import CSV Function =======================
+function importCSVFile(){
+  const fileInput = document.getElementById('importCsvInput');
+  if(fileInput.files.length===0){ alert("Please select a CSV file."); return; }
+  const file = fileInput.files[0];
+  const reader = new FileReader();
+  reader.onload = function(e){
+    const text = e.target.result;
+    // Lấy tên file không bao gồm đường dẫn
+    let fileName = file.name.replace(/\.[^/.]+$/, ""); // bỏ phần mở rộng .csv
+    const setName = fileName || ("Imported Set " + new Date().getTime());
+    parseCSV(text,setName);   // dùng hàm parseCSV hiện tại, giữ nguyên logic
+    renderSets();             // cập nhật danh sách checkbox
+    updateEndQuestion();      // cập nhật end/start
+    alert("Imported CSV as: " + setName);
+  };
+  reader.readAsText(file);
+}
+
+// ======================= Render Questions =======================
+function renderQuestions() {
+  const fixedMode = document.getElementById('fixedMode').checked;
+  const instantMode = document.getElementById('instantMode').checked;
+  const showOnly = document.getElementById('showFlaggedOnly').checked;
+
+  const selectedSets = Array.from(document.querySelectorAll('#setsBox input:checked')).map(cb => cb.value);
+  allQuestions = [];
+  selectedSets.forEach(set => allQuestions = allQuestions.concat(questionBanks[set] || []));
+  if (!fixedMode) allQuestions.sort(() => Math.random() - 0.5);
+
+  let shown = [];
+  if (showOnly) {
+    shown = allQuestions.filter(q => flagStates[q.q]);
+  } else {
+    const start = parseInt(document.getElementById('startQ').value) || 1;
+    const end = parseInt(document.getElementById('endQ').value) || allQuestions.length;
+    let numInput = document.getElementById('numQ');
+    let num = parseInt(numInput.value) || allQuestions.length;
+    if (num > end - start + 1) num = end - start + 1;
+    numInput.value = num; // cập nhật input hiển thị
+    shown = allQuestions.slice(start - 1, end).slice(0, num);
+  }
+
+  // Cập nhật số câu hiển thị / tổng số câu
+  const countDiv = document.getElementById('questionCount');
+  countDiv.innerText = `Showing ${shown.length} / ${allQuestions.length} questions`;
+
+  const container = document.getElementById('questions');
+  container.innerHTML = "";
+
+  shown.forEach((q, i) => {
+    const div = document.createElement("div");
+    div.className = "question";
+
+    const isFlagged = flagStates[q.q] || false;
+    const flagDiv = document.createElement("div");
+    flagDiv.className = "flag-container";
+    flagDiv.innerHTML = `<input type="checkbox" class="flag-checkbox" ${isFlagged ? "checked" : ""}> <span>Flag</span>`;
+    flagDiv.querySelector("input").onchange = (e) => {
+      flagStates[q.q] = e.target.checked;
+      if (document.getElementById('showFlaggedOnly').checked) renderQuestions();
+    };
+    div.appendChild(flagDiv);
+
+    const qText = document.createElement("p");
+    qText.innerText = `Q${i + 1}: ${q.q}`;
+    div.appendChild(qText);
+
+    let opts = [...q.options];
+    if (!fixedMode) opts.sort(() => Math.random() - 0.5);
+    opts.forEach(opt => {
+      const optDiv = document.createElement("label");
+      optDiv.className = "option";
+      optDiv.innerHTML = `<input type="radio" name="q${i}" value="${opt.key}"> ${opt.text}`;
+      optDiv.onclick = () => handleAnswer(optDiv, opt.key, q.answer, i);
+      div.appendChild(optDiv);
+    });
+
+    container.appendChild(div);
+  });
+}
+
+// Buttons: không reset flagStates khi refresh hoặc show all
+function showAllQuestions(){
+  // Lấy các set đang chọn
+  const selectedSets = Array.from(document.querySelectorAll('#setsBox input:checked')).map(cb => cb.value);
+  
+  // Tính tổng số câu của các set được chọn
+  let total = 0;
+  selectedSets.forEach(set => total += (questionBanks[set] || []).length);
+
+  // Cập nhật start, end, num
+  document.getElementById('startQ').value = 1;    // start = 1
+  document.getElementById('endQ').value = total;  // end = tổng số câu
+  document.getElementById('numQ').value = total;  // num = tổng số câu
+
+  renderQuestions();
+}
+
+function refreshQuestions(){
+  renderQuestions();
+}
+
+// ======================= Answer Handling =======================
+function handleAnswer(optDiv,choiceKey,answerKey,index){
+  const instant = document.getElementById('instantMode').checked;
+  const parent = optDiv.parentNode;
+  [...parent.querySelectorAll(".option")].forEach(o=>o.classList.remove("correct","wrong"));
+  if(instant){
+    if(choiceKey===answerKey) optDiv.classList.add("correct");
+    else{
+      optDiv.classList.add("wrong");
+      const correctOpt=[...parent.querySelectorAll(".option")].find(o=>o.querySelector("input").value===answerKey);
+      if(correctOpt) correctOpt.classList.add("correct");
+    }
+  }
+}
+
+// ======================= Buttons =======================
+
+
+function refreshQuestions(){renderQuestions();}
+function loadSelectedSets(){
+  // Lấy các set đang chọn
+  const selectedSets = Array.from(document.querySelectorAll('#setsBox input:checked')).map(cb => cb.value);
+  
+  // Gộp toàn bộ câu của các set được chọn
+  allQuestions = [];
+  selectedSets.forEach(set => allQuestions = allQuestions.concat(questionBanks[set] || []));
+
+  // Cập nhật start, end, num
+  document.getElementById('startQ').value = 1;
+  document.getElementById('endQ').value = allQuestions.length;
+  document.getElementById('numQ').value = allQuestions.length;
+
+  renderQuestions();
+}
+function clearAllFlags(){Object.keys(flagStates).forEach(k=>flagStates[k]=false); renderQuestions();}
+
+function exportFlagged(){
+  const flaggedQs=[];
+  document.querySelectorAll(".question").forEach(div=>{
+    const flagCheckbox=div.querySelector(".flag-checkbox");
+    if(flagCheckbox && flagCheckbox.checked){
+      const qText=div.querySelector("p").innerText.replace(/^Q\d+: /,"");
+      const options=[...div.querySelectorAll(".option input")].map(inp=>inp.parentNode.textContent.trim());
+      const answer=[...div.querySelectorAll(".option input")].find(inp=>inp.parentNode.classList.contains("correct"));
+      const ansKey=answer?answer.value:"";
+      flaggedQs.push([qText,...options,ansKey]);
+    }
+  });
+
+  if(flaggedQs.length===0){alert("No flagged questions."); return;}
+
+  let csv="Question,Option A,Option B,Option C,Answer\n";
+  flaggedQs.forEach(row=>{ csv+=row.map(x=>`"${x}"`).join(",")+"\n"; });
+
+  const blob=new Blob([csv],{type:"text/csv"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url; a.download="flagged_questions.csv"; a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ======================= Initialize =======================
+renderSets();
+updateEndQuestion(); // khởi tạo start/end hợp lệ
+document.getElementById('startQ').value = 1;
+document.getElementById('numQ').value = 1;
+renderQuestions();
+</script>
+</body>
+</html>
