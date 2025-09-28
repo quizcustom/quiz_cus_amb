@@ -282,21 +282,32 @@ function renderQuestions() {
   const showOnly = document.getElementById('showFlaggedOnly').checked;
 
   const selectedSets = Array.from(document.querySelectorAll('#setsBox input:checked')).map(cb => cb.value);
-  allQuestions = [];
+  let allQuestions = [];
   selectedSets.forEach(set => allQuestions = allQuestions.concat(questionBanks[set] || []));
+
   let shown = [];
+  let totalQuestions = allQuestions.length;
+  let start = parseInt(document.getElementById('startQ').value) || 1;
+  let end = parseInt(document.getElementById('endQ').value) || totalQuestions;
+  let numInput = document.getElementById('numQ');
+  let num = parseInt(numInput.value) || totalQuestions;
+  // Clamp start/end
+  if (start < 1) start = 1;
+  if (end > totalQuestions) end = totalQuestions;
+  if (end < start) end = start;
+  numInput.value = num;
+
   if (showOnly) {
-    // Không random khi chỉ show flagged
-    shown = allQuestions.filter(q => flagStates[q.q]);
+    // Lấy flagged theo thứ tự gốc (không random thứ tự câu hỏi)
+    let flagged = allQuestions.filter(q => flagStates[q.q]);
+    // Áp dụng start/end/num theo thứ tự gốc
+    let flaggedRange = flagged.slice(start - 1, end).slice(0, num);
+    // Shuffle flaggedRange để không cố định thứ tự khi flagged only
+    shown = [...flaggedRange].sort(() => Math.random() - 0.5);
   } else {
-    if (!fixedMode) allQuestions.sort(() => Math.random() - 0.5);
-    const start = parseInt(document.getElementById('startQ').value) || 1;
-    const end = parseInt(document.getElementById('endQ').value) || allQuestions.length;
-    let numInput = document.getElementById('numQ');
-    let num = parseInt(numInput.value) || allQuestions.length;
-    if (num > end - start + 1) num = end - start + 1;
-    numInput.value = num; // cập nhật input hiển thị
-    shown = allQuestions.slice(start - 1, end).slice(0, num);
+    // Shuffle allQuestions nếu không fixedMode
+    let questionsToShow = fixedMode ? allQuestions : [...allQuestions].sort(() => Math.random() - 0.5);
+    shown = questionsToShow.slice(start - 1, end).slice(0, num);
   }
 
   // Cập nhật số câu hiển thị / tổng số câu
@@ -325,8 +336,8 @@ function renderQuestions() {
     div.appendChild(qText);
 
     let opts = [...q.options];
-    // Lưu lại thứ tự gốc để export đúng, chỉ random khi không fixedMode và không show flagged only
-    let renderOpts = (!fixedMode && !document.getElementById('showFlaggedOnly').checked) ? opts.sort(() => Math.random() - 0.5) : opts;
+    // Khi flagged only thì luôn shuffle đáp án
+    let renderOpts = (showOnly || (!fixedMode && !showOnly)) ? [...opts].sort(() => Math.random() - 0.5) : opts;
     renderOpts.forEach(opt => {
       const optDiv = document.createElement("label");
       optDiv.className = "option";
