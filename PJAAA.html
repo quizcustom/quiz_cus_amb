@@ -14,12 +14,7 @@
 }
  
 body { font-family: Arial, sans-serif; display: flex; justify-content: center; padding: 20px; background: #f9fafb; }
-.container {
-  width: 80%;       /* chiếm ít hơn */
-  max-width: 700px; /* giảm tối đa xuống 700px */
-  margin: auto;     /* căn giữa */
-}
-
+.container { width: 80%; max-width: 700px; }
 .box-level1 { border: 2px solid #333; border-radius: 12px; padding: 15px; margin-bottom: 20px; background: #fff; }
 .box-level1 h2 { margin: 0 0 10px 0; font-size: 18px; cursor: pointer; user-select: none; }
 .box-content { margin-top: 10px; }
@@ -42,13 +37,6 @@ button:hover { background: #1e40af; }
 .flag-checkbox { margin-right: 10px; cursor: pointer; }
 .flag-container { margin-bottom: 10px; display: flex; align-items: center; }
 
-/* ===== Mobile touch optimization ===== */
-body {
-  touch-action: manipulation; /* ngăn zoom khi tap */
-  -webkit-user-select: none;  /* tránh chọn text khi chạm */
-  -ms-touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent; /* bỏ highlight iOS */
-}
 
 @media (pointer: coarse) {
   /* Tăng kích thước checkbox trên mobile */
