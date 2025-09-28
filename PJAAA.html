@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
 <title>Quiz Practice - 4 Sets</title>
 <style>
 .checkbox-level2 input[type="checkbox"] {
   transition: transform 0.2s;
 }
-
-.checkbox-level2 input[type="checkbox"]:hover {
-  transform: none;
+/* Ngăn scale khi tap trên mobile */
+.checkbox-level2 input[type="checkbox"]:active {
+  transform: none !important;
 }
  
 body { font-family: Arial, sans-serif; display: flex; justify-content: center; padding: 20px; background: #f9fafb; }
