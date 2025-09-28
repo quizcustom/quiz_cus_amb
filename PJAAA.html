@@ -36,6 +36,29 @@ button:hover { background: #1e40af; }
 .collapsed { display: none; }
 .flag-checkbox { margin-right: 10px; cursor: pointer; }
 .flag-container { margin-bottom: 10px; display: flex; align-items: center; }
+
+/* ===== Mobile touch optimization ===== */
+body {
+  touch-action: manipulation; /* ngăn zoom khi tap */
+  -webkit-user-select: none;  /* tránh chọn text khi chạm */
+  -ms-touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent; /* bỏ highlight iOS */
+}
+
+@media (pointer: coarse) {
+  /* Tăng kích thước checkbox trên mobile */
+  .checkbox-level2 input[type="checkbox"] {
+    min-width: 48px;
+    min-height: 48px;
+  }
+
+  /* Vẫn giữ transform none khi active */
+  .checkbox-level2 input[type="checkbox"]:active {
+    transform: none !important;
+  }
+}
+  
+  
 </style>
 </head>
 <body>
