@@ -121,6 +121,7 @@ button:hover { background: #1e40af; }
 </style>
 </head>
 <body>
+<div style="text-align:center; font-size:14px; color:#555; margin-bottom:8px; font-weight:bold;">Version: 2025-09-28</div>
 <div class="container">
 
   <!-- Question Sets -->
@@ -336,6 +337,17 @@ function renderQuestions() {
         selectedAnswers[q.q] = opt.key;
         handleAnswer(optDiv, opt.key, q.answer, i);
       };
+      // Nếu đã chọn đáp án thì tự động highlight đúng/sai
+      if (selectedAnswers[q.q]) {
+        if (selectedAnswers[q.q] === opt.key && selectedAnswers[q.q] === q.answer) {
+          optDiv.classList.add("correct");
+        } else if (selectedAnswers[q.q] === opt.key && selectedAnswers[q.q] !== q.answer) {
+          optDiv.classList.add("wrong");
+        } else if (opt.key === q.answer && selectedAnswers[q.q] !== q.answer && selectedAnswers[q.q] !== undefined) {
+          // Nếu đã chọn sai thì vẫn highlight đáp án đúng
+          optDiv.classList.add("correct");
+        }
+      }
       div.appendChild(optDiv);
     });
 
@@ -356,11 +368,12 @@ function showAllQuestions(){
   document.getElementById('startQ').value = 1;    // start = 1
   document.getElementById('endQ').value = total;  // end = tổng số câu
   document.getElementById('numQ').value = total;  // num = tổng số câu
-
+  selectedAnswers = {}; // reset đáp án đã chọn
   renderQuestions();
 }
 
 function refreshQuestions(){
+  selectedAnswers = {}; // reset đáp án đã chọn
   renderQuestions();
 }
 
