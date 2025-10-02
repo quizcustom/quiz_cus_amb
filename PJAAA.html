@@ -5,128 +5,37 @@
 <meta charset="UTF-8">
 <title>Quiz Practice - 4 Sets</title>
 <style>
-  .checkbox-level2 input[type="checkbox"] {
-    transition: transform 0.2s;
-    accent-color: #B3E0F6;
-    background-color: #B3E0F6;
-    border-color: #B3E0F6;
-  }
+.checkbox-level2 input[type="checkbox"] {
+  transition: transform 0.2s;
+}
 /* Ngăn scale khi tap trên mobile */
 .checkbox-level2 input[type="checkbox"]:active {
   transform: none !important;
 }
  
-  body { font-family: Arial, sans-serif; display: flex; justify-content: center; padding: 20px; background: #f9fafb; font-size: 0.95em; }
+body { font-family: Arial, sans-serif; display: flex; justify-content: center; padding: 20px; background: #f9fafb; }
 .container { width: 80%; max-width: 700px; }
 .box-level1 { border: 2px solid #333; border-radius: 12px; padding: 15px; margin-bottom: 20px; background: #fff; }
-  .box-level1 h2 { margin: 0 0 10px 0; font-size: 0.95em; cursor: pointer; user-select: none; }
+.box-level1 h2 { margin: 0 0 10px 0; font-size: 18px; cursor: pointer; user-select: none; }
 .box-content { margin-top: 10px; }
-  .checkbox-level2 { display: block; width: 100%; padding: 4px 10px; margin: 2px 0; border: 1px solid #aaa; border-radius: 20px; cursor: pointer; transition: all 0.2s; box-sizing: border-box; min-height: 28px; font-size: 0.95em; }
+.checkbox-level2 { display: block; width: 100%; padding: 4px 10px; margin: 2px 0; border: 1px solid #aaa; border-radius: 20px; cursor: pointer; transition: all 0.2s; box-sizing: border-box; min-height: 28px; }
 /* .checkbox-level2:hover { transform: scale(0.995); background-color: #f1f5f9; } */
 .controls-row { display: flex; justify-content: space-between; margin-bottom: 10px; }
 .controls-row label { margin-right: 10px; }
 .button-row { display: flex; justify-content: space-between; margin: 10px 0; gap: 10px; flex-wrap: wrap; }
 button { padding: 6px 14px; border: none; border-radius: 8px; cursor: pointer; background: #2563eb; color: white; font-weight: bold; }
-button { padding: 6px 14px; border: none; border-radius: 8px; cursor: pointer; background: #B3E0F6; color: #2563eb; font-weight: bold; }
-button:hover { background: #90c8e0; }
-  .question { margin-bottom: 20px; padding: 15px; background: #fff; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); font-size: 0.95em; display: flex; align-items: flex-start; gap: 10px; }
+button:hover { background: #1e40af; }
+.question { margin-bottom: 20px; padding: 15px; background: #fff; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
 .question p { font-weight: bold; margin: 0 0 10px 0; }
-  .option {
-  display: block;
-  margin: 1px 0;
-  padding: 2px 8px 2px 0;
-  border-radius: 0;
-  cursor: pointer;
-  transition: background 0.2s;
-  font-size: 0.95em;
-  line-height: 1.15;
-  min-height: 1.25em;
-  }
-/* Dải màu đậm bên trái đáp án */
-.option-mark {
-    width: 0;
-    height: 100%;
-    background: transparent;
-    border-radius: 2px 0 0 2px;
-    box-shadow: 0 0 2px rgba(0,0,0,0.08);
-    margin-right: 8px;
-    flex-shrink: 0;
-    transition: width 0.2s, background 0.2s;
-}
-.option.correct .option-mark {
-  background: #10b981;
-  width: 8px;
-}
-.option.correct.wrong-selected .option-mark {
-  background: #10b981;
-  width: 4px;
-}
-.option.wrong .option-mark {
-  background: #ef4444;
-  width: 8px;
-}
-  .option input[type="radio"] {
-    margin-right: 8px;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    border: none;
-    background: #fff;
-    box-shadow: none;
-  }
-  .option input[type="radio"]:checked {
-    background: #fff;
-  }
-  .option.correct input[type="radio"]:checked {
-    background: #d1fae5;
-  }
-  .option.wrong input[type="radio"]:checked {
-    background: #fee2e2;
-  }
-  }
-  .option.correct input[type="radio"],
-  .option.wrong input[type="radio"] {
-    box-shadow: none;
-  }
-  }
+.option { display: block; margin: 6px 0; padding: 8px; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
+.option input[type="radio"] { margin-right: 10px; }
 .option:hover { background: #f1f5f9; }
-.option.correct { background: #d1fae5; border: none; border-radius: 0; }
-.option.wrong { background: #fee2e2; border: none; border-radius: 0; }
+.option.correct { background: #d1fae5; border: 1px solid #10b981; }
+.option.wrong { background: #fee2e2; border: 1px solid #ef4444; }
 .collapsible { max-height: 200px; overflow-y: auto; transition: max-height 0.3s ease; }
 .collapsed { display: none; }
-.flag-checkbox {
-  margin-right: 0;
-  cursor: pointer;
-  border: none;
-  background: none;
-  padding: 0;
-  font-size: 1.2em;
-  color: #eab308;
-  display: flex;
-  align-items: center;
-}
-.flag-round {
-    transition: background 0.2s;
-    width: 16px;
-    height: 16px;
-    border-radius: 4px;
-    background: #fecaca;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.07);
-    margin-right: 8px;
-    margin-left: 0;
-  }
-  .flag-round.flag-active {
-    background: #B3E0F6 !important;
-    box-shadow: 0 2px 6px rgba(179,224,246,0.25);
-  }
-.flag-container {
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-}
+.flag-checkbox { margin-right: 10px; cursor: pointer; }
+.flag-container { margin-bottom: 10px; display: flex; align-items: center; }
 
 @media (max-width: 600px) {
 }
@@ -161,7 +70,7 @@ button:hover { background: #90c8e0; }
     width: 0.8rem;
     height: 0.8rem;
   }
-  #questionCount { font-size: 0.9em; }
+  #questionCount { font-size: 0.85rem; }
   body { padding: 1vw; }
   .container { width: 100%; max-width: 100vw; padding: 0 1vw; }
   .box-level1 { padding: 0.5rem 0.5rem 1rem 0.5rem; border-radius: 0.5rem; margin-bottom: 1rem; }
@@ -213,7 +122,7 @@ button:hover { background: #90c8e0; }
 </head>
 <body>
 <div class="container">
-  <div class="version-bar" style="text-align:center; font-size:0.95em; color:#555; margin-bottom:8px; font-weight:bold;">version 1.1.3</div>
+  <div class="version-bar" style="text-align:center; font-size:14px; color:#555; margin-bottom:8px; font-weight:bold;">version 1.0.5</div>
 
   <!-- Question Sets -->
   <div class="box-level1">
@@ -393,9 +302,8 @@ function renderQuestions() {
       let flagged = allQuestions.filter(q => flagStates[q.q]);
       shown = flagged.length > 1 ? [...flagged].sort(() => Math.random() - 0.5) : flagged;
     } else {
-      // Nếu cần shuffle câu hỏi
-      let questions = allQuestions.slice(start - 1, end).slice(0, num);
-      shown = (window._forceShuffleQuestions) ? [...questions].sort(() => Math.random() - 0.5) : questions;
+      // Luôn lấy theo thứ tự gốc, không shuffle!
+      shown = allQuestions.slice(start - 1, end).slice(0, num);
   }
 
   // Cập nhật số câu hiển thị / tổng số câu
@@ -408,84 +316,72 @@ function renderQuestions() {
   shown.forEach((q, i) => {
     const div = document.createElement("div");
     div.className = "question";
-    // Hàng 1: flag + câu hỏi
-    const row1 = document.createElement("div");
-    row1.style.display = "flex";
-    row1.style.alignItems = "center";
-    row1.style.gap = "8px";
+
     const isFlagged = flagStates[q.q] || false;
     const flagDiv = document.createElement("div");
     flagDiv.className = "flag-container";
-    flagDiv.innerHTML = `<span class="flag-round${isFlagged ? ' flag-active' : ''}" style="cursor:pointer;"><input type="checkbox" class="flag-checkbox" ${isFlagged ? "checked" : ""} style="display:none;"><span style="font-size:1.05em; color:#eab308;">&#x1F6A9;</span></span>`;
-    const round = flagDiv.querySelector('.flag-round');
-    const checkbox = flagDiv.querySelector('input');
-    round.onclick = () => {
-      checkbox.checked = !checkbox.checked;
-      flagStates[q.q] = checkbox.checked;
-      renderQuestions();
-    };
-    checkbox.onchange = (e) => {
+    flagDiv.innerHTML = `<input type="checkbox" class="flag-checkbox" ${isFlagged ? "checked" : ""}> <span>Flag</span>`;
+    flagDiv.querySelector("input").onchange = (e) => {
       flagStates[q.q] = e.target.checked;
-      renderQuestions();
+      if (document.getElementById('showFlaggedOnly').checked) renderQuestions();
     };
-    row1.appendChild(flagDiv);
+    div.appendChild(flagDiv);
+
     const qText = document.createElement("p");
-    qText.style.margin = "0";
-    qText.style.fontWeight = "bold";
     qText.innerText = `Q${i + 1}: ${q.q}`;
-    row1.appendChild(qText);
-    div.appendChild(row1);
-    // Hàng 2: các đáp án
-    const row2 = document.createElement("div");
-    row2.style.display = "block";
+    div.appendChild(qText);
+
     let opts = [...q.options];
-    let renderOpts = (window._forceShuffle && !showOnly) ? [...opts].sort(() => Math.random() - 0.5) : opts;
+    // Khi flagged only thì luôn shuffle đáp án
+    let renderOpts = (showOnly || (!fixedMode && !showOnly)) ? [...opts].sort(() => Math.random() - 0.5) : opts;
     renderOpts.forEach(opt => {
       const optDiv = document.createElement("label");
       optDiv.className = "option";
-      const markDiv = document.createElement("span");
-      markDiv.className = "option-mark";
-      optDiv.appendChild(markDiv);
+      // Nếu đã chọn đáp án thì checked
       const checked = selectedAnswers[q.q] === opt.key ? "checked" : "";
-      const radio = document.createElement("input");
-      radio.type = "radio";
-      radio.name = `q_${q.q}`;
-      radio.value = opt.key;
-      if (checked) radio.checked = true;
-      optDiv.appendChild(radio);
-      const textSpan = document.createElement("span");
-      textSpan.textContent = ` ${opt.text}`;
-      optDiv.appendChild(textSpan);
-      // Luôn gán highlight đúng/sai nếu đã chọn đáp án
-      if (checked) {
-        if (opt.key === q.answer) optDiv.classList.add("correct");
-        else optDiv.classList.add("wrong");
-      }
+      optDiv.innerHTML = `<input type="radio" name="q_${q.q}" value="${opt.key}" ${checked}> ${opt.text}`;
       optDiv.onclick = () => {
         selectedAnswers[q.q] = opt.key;
         handleAnswer(optDiv, opt.key, q.answer, i);
       };
-      row2.appendChild(optDiv);
+      // Nếu đã chọn đáp án thì tự động highlight đúng/sai
+      if (selectedAnswers[q.q]) {
+        if (selectedAnswers[q.q] === opt.key && selectedAnswers[q.q] === q.answer) {
+          optDiv.classList.add("correct");
+        } else if (selectedAnswers[q.q] === opt.key && selectedAnswers[q.q] !== q.answer) {
+          optDiv.classList.add("wrong");
+        } else if (opt.key === q.answer && selectedAnswers[q.q] !== q.answer && selectedAnswers[q.q] !== undefined) {
+          // Nếu đã chọn sai thì vẫn highlight đáp án đúng
+          optDiv.classList.add("correct");
+        }
+      }
+      div.appendChild(optDiv);
     });
-    div.appendChild(row2);
+
     container.appendChild(div);
   });
 }
 
 // Buttons: không reset flagStates khi refresh hoặc show all
 function showAllQuestions(){
-  selectedAnswers = {};
-  const fixedMode = document.getElementById('fixedMode').checked;
-  window._forceShuffle = !fixedMode;
-  window._forceShuffleQuestions = !fixedMode;
+  // Lấy các set đang chọn
+  const selectedSets = Array.from(document.querySelectorAll('#setsBox input:checked')).map(cb => cb.value);
+  
+  // Tính tổng số câu của các set được chọn
+  let total = 0;
+  selectedSets.forEach(set => total += (questionBanks[set] || []).length);
+
+  // Cập nhật start, end, num
+  document.getElementById('startQ').value = 1;    // start = 1
+  document.getElementById('endQ').value = total;  // end = tổng số câu
+  document.getElementById('numQ').value = total;  // num = tổng số câu
+  selectedAnswers = {}; // reset đáp án đã chọn
   renderQuestions();
 }
 
 function refreshQuestions(){
+  // Chỉ xóa đáp án đã chọn, giữ nguyên số lượng câu hỏi đang hiển thị
   selectedAnswers = {};
-  const fixedMode = document.getElementById('fixedMode').checked;
-  window._forceShuffle = !fixedMode;
-  window._forceShuffleQuestions = !fixedMode;
   renderQuestions();
 }
 
