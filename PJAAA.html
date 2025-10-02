@@ -32,8 +32,7 @@ button:hover { background: #90c8e0; }
   .question { margin-bottom: 20px; padding: 15px; background: #fff; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); font-size: 0.95em; display: flex; align-items: flex-start; gap: 10px; }
 .question p { font-weight: bold; margin: 0 0 10px 0; }
   .option {
-  display: flex;
-  align-items: stretch;
+  display: block;
   margin: 1px 0;
   padding: 2px 8px 2px 0;
   border-radius: 0;
@@ -457,6 +456,11 @@ function renderQuestions() {
       const textSpan = document.createElement("span");
       textSpan.textContent = ` ${opt.text}`;
       optDiv.appendChild(textSpan);
+      // Luôn gán highlight đúng/sai nếu đã chọn đáp án
+      if (checked) {
+        if (opt.key === q.answer) optDiv.classList.add("correct");
+        else optDiv.classList.add("wrong");
+      }
       optDiv.onclick = () => {
         selectedAnswers[q.q] = opt.key;
         handleAnswer(optDiv, opt.key, q.answer, i);
