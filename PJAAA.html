@@ -29,7 +29,7 @@
 button { padding: 6px 14px; border: none; border-radius: 8px; cursor: pointer; background: #2563eb; color: white; font-weight: bold; }
 button { padding: 6px 14px; border: none; border-radius: 8px; cursor: pointer; background: #B3E0F6; color: #2563eb; font-weight: bold; }
 button:hover { background: #90c8e0; }
-  .question { margin-bottom: 20px; padding: 15px; background: #fff; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); font-size: 0.95em; }
+  .question { margin-bottom: 20px; padding: 15px; background: #fff; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); font-size: 0.95em; display: flex; align-items: flex-start; gap: 10px; }
 .question p { font-weight: bold; margin: 0 0 10px 0; }
   .option {
   display: flex;
@@ -45,14 +45,14 @@ button:hover { background: #90c8e0; }
   }
 /* Dải màu đậm bên trái đáp án */
 .option-mark {
-  width: 0;
-  height: 100%;
-  background: transparent;
-  border-radius: 2px 0 0 2px;
-  box-shadow: 0 0 2px rgba(0,0,0,0.08);
-  margin-right: 8px;
-  flex-shrink: 0;
-  transition: width 0.2s, background 0.2s;
+    width: 0;
+    height: 100%;
+    background: transparent;
+    border-radius: 2px 0 0 2px;
+    box-shadow: 0 0 2px rgba(0,0,0,0.08);
+    margin-right: 8px;
+    flex-shrink: 0;
+    transition: width 0.2s, background 0.2s;
 }
 .option.correct .option-mark {
   background: #10b981;
@@ -67,13 +67,13 @@ button:hover { background: #90c8e0; }
   width: 8px;
 }
   .option input[type="radio"] {
-  margin-right: 10px;
-  width: 1em;
-  height: 1em;
-  border-radius: 50%;
-  border: none;
-  background: #fff;
-  box-shadow: none;
+    margin-right: 8px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: none;
+    background: #fff;
+    box-shadow: none;
   }
   .option input[type="radio"]:checked {
     background: #fff;
@@ -108,8 +108,8 @@ button:hover { background: #90c8e0; }
 }
 .flag-round {
     transition: background 0.2s;
-    width: 1.2em;
-    height: 1.2em;
+    width: 16px;
+    height: 16px;
     border-radius: 4px;
     background: #fecaca;
     display: flex;
@@ -434,8 +434,8 @@ function renderQuestions() {
     div.appendChild(qText);
 
     let opts = [...q.options];
-  // Chỉ shuffle đáp án khi ở chế độ flagged only (showOnly)
-  let renderOpts = showOnly ? [...opts].sort(() => Math.random() - 0.5) : opts;
+    // Chỉ shuffle đáp án khi nhấn refresh/all và không bật fixed mode
+    let renderOpts = (window._forceShuffle && !showOnly) ? [...opts].sort(() => Math.random() - 0.5) : opts;
     renderOpts.forEach(opt => {
       const optDiv = document.createElement("label");
       optDiv.className = "option";
@@ -477,24 +477,18 @@ function renderQuestions() {
 
 // Buttons: không reset flagStates khi refresh hoặc show all
 function showAllQuestions(){
-  // Lấy các set đang chọn
-  const selectedSets = Array.from(document.querySelectorAll('#setsBox input:checked')).map(cb => cb.value);
-  
-  // Tính tổng số câu của các set được chọn
-  let total = 0;
-  selectedSets.forEach(set => total += (questionBanks[set] || []).length);
-
-  // Cập nhật start, end, num
-  document.getElementById('startQ').value = 1;    // start = 1
-  document.getElementById('endQ').value = total;  // end = tổng số câu
-  document.getElementById('numQ').value = total;  // num = tổng số câu
-  selectedAnswers = {}; // reset đáp án đã chọn
+  selectedAnswers = {};
+  // Nếu không bật Fixed Mode thì shuffle đáp án
+  const fixedMode = document.getElementById('fixedMode').checked;
+  window._forceShuffle = !fixedMode;
   renderQuestions();
 }
 
 function refreshQuestions(){
-  // Chỉ xóa đáp án đã chọn, giữ nguyên số lượng câu hỏi đang hiển thị
   selectedAnswers = {};
+  // Nếu không bật Fixed Mode thì shuffle đáp án
+  const fixedMode = document.getElementById('fixedMode').checked;
+  window._forceShuffle = !fixedMode;
   renderQuestions();
 }
 
