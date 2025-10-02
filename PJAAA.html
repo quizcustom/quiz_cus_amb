@@ -394,8 +394,9 @@ function renderQuestions() {
       let flagged = allQuestions.filter(q => flagStates[q.q]);
       shown = flagged.length > 1 ? [...flagged].sort(() => Math.random() - 0.5) : flagged;
     } else {
-      // Luôn lấy theo thứ tự gốc, không shuffle!
-      shown = allQuestions.slice(start - 1, end).slice(0, num);
+      // Nếu cần shuffle câu hỏi
+      let questions = allQuestions.slice(start - 1, end).slice(0, num);
+      shown = (window._forceShuffleQuestions) ? [...questions].sort(() => Math.random() - 0.5) : questions;
   }
 
   // Cập nhật số câu hiển thị / tổng số câu
@@ -408,12 +409,14 @@ function renderQuestions() {
   shown.forEach((q, i) => {
     const div = document.createElement("div");
     div.className = "question";
-
+    // Hàng 1: flag + câu hỏi
+    const row1 = document.createElement("div");
+    row1.style.display = "flex";
+    row1.style.alignItems = "center";
+    row1.style.gap = "8px";
     const isFlagged = flagStates[q.q] || false;
     const flagDiv = document.createElement("div");
     flagDiv.className = "flag-container";
-    flagDiv.style.float = "left";
-    flagDiv.style.marginRight = "10px";
     flagDiv.innerHTML = `<span class="flag-round${isFlagged ? ' flag-active' : ''}" style="cursor:pointer;"><input type="checkbox" class="flag-checkbox" ${isFlagged ? "checked" : ""} style="display:none;"><span style="font-size:1.05em; color:#eab308;">&#x1F6A9;</span></span>`;
     const round = flagDiv.querySelector('.flag-round');
     const checkbox = flagDiv.querySelector('input');
@@ -426,15 +429,17 @@ function renderQuestions() {
       flagStates[q.q] = e.target.checked;
       renderQuestions();
     };
-    div.appendChild(flagDiv);
-
+    row1.appendChild(flagDiv);
     const qText = document.createElement("p");
-    qText.style.marginLeft = "2.5em";
+    qText.style.margin = "0";
+    qText.style.fontWeight = "bold";
     qText.innerText = `Q${i + 1}: ${q.q}`;
-    div.appendChild(qText);
-
+    row1.appendChild(qText);
+    div.appendChild(row1);
+    // Hàng 2: các đáp án
+    const row2 = document.createElement("div");
+    row2.style.display = "block";
     let opts = [...q.options];
-    // Chỉ shuffle đáp án khi nhấn refresh/all và không bật fixed mode
     let renderOpts = (window._forceShuffle && !showOnly) ? [...opts].sort(() => Math.random() - 0.5) : opts;
     renderOpts.forEach(opt => {
       const optDiv = document.createElement("label");
@@ -442,7 +447,6 @@ function renderQuestions() {
       const markDiv = document.createElement("span");
       markDiv.className = "option-mark";
       optDiv.appendChild(markDiv);
-      // Nếu đã chọn đáp án thì checked
       const checked = selectedAnswers[q.q] === opt.key ? "checked" : "";
       const radio = document.createElement("input");
       radio.type = "radio";
@@ -457,20 +461,9 @@ function renderQuestions() {
         selectedAnswers[q.q] = opt.key;
         handleAnswer(optDiv, opt.key, q.answer, i);
       };
-      // Nếu đã chọn đáp án thì tự động highlight đúng/sai
-      if (selectedAnswers[q.q]) {
-        if (selectedAnswers[q.q] === opt.key && selectedAnswers[q.q] === q.answer) {
-          optDiv.classList.add("correct");
-        } else if (selectedAnswers[q.q] === opt.key && selectedAnswers[q.q] !== q.answer) {
-          optDiv.classList.add("wrong");
-        } else if (opt.key === q.answer && selectedAnswers[q.q] !== q.answer && selectedAnswers[q.q] !== undefined) {
-          // Nếu đã chọn sai thì vẫn highlight đáp án đúng
-          optDiv.classList.add("correct");
-        }
-      }
-      div.appendChild(optDiv);
+      row2.appendChild(optDiv);
     });
-
+    div.appendChild(row2);
     container.appendChild(div);
   });
 }
@@ -478,17 +471,17 @@ function renderQuestions() {
 // Buttons: không reset flagStates khi refresh hoặc show all
 function showAllQuestions(){
   selectedAnswers = {};
-  // Nếu không bật Fixed Mode thì shuffle đáp án
   const fixedMode = document.getElementById('fixedMode').checked;
   window._forceShuffle = !fixedMode;
+  window._forceShuffleQuestions = !fixedMode;
   renderQuestions();
 }
 
 function refreshQuestions(){
   selectedAnswers = {};
-  // Nếu không bật Fixed Mode thì shuffle đáp án
   const fixedMode = document.getElementById('fixedMode').checked;
   window._forceShuffle = !fixedMode;
+  window._forceShuffleQuestions = !fixedMode;
   renderQuestions();
 }
 
