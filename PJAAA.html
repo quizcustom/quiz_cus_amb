@@ -55,8 +55,8 @@ button:hover { background: #1e40af; }
   background: #B3E0F6 !important;
   box-shadow: 0 2px 6px rgba(179,224,246,0.25);
 }
-  width: 2em;
-  height: 2em;
+  width: 1.2em;
+  height: 1.2em;
   border-radius: 50%;
   background: #f3f4f6;
   display: flex;
@@ -157,7 +157,7 @@ button:hover { background: #1e40af; }
 </head>
 <body>
 <div class="container">
-  <div class="version-bar" style="text-align:center; font-size:0.95em; color:#555; margin-bottom:8px; font-weight:bold;">version 1.0.6</div>
+  <div class="version-bar" style="text-align:center; font-size:0.95em; color:#555; margin-bottom:8px; font-weight:bold;">version 1.0.7</div>
 
   <!-- Question Sets -->
   <div class="box-level1">
@@ -357,8 +357,15 @@ function renderQuestions() {
     flagDiv.className = "flag-container";
     flagDiv.style.float = "left";
     flagDiv.style.marginRight = "10px";
-    flagDiv.innerHTML = `<span class="flag-round${isFlagged ? ' flag-active' : ''}"><input type="checkbox" class="flag-checkbox" ${isFlagged ? "checked" : ""} style="display:none;"><span style="font-size:1.3em; color:#eab308;">&#x1F6A9;</span></span>`;
-    flagDiv.querySelector("input").onchange = (e) => {
+    flagDiv.innerHTML = `<span class="flag-round${isFlagged ? ' flag-active' : ''}" style="cursor:pointer;"><input type="checkbox" class="flag-checkbox" ${isFlagged ? "checked" : ""} style="display:none;"><span style="font-size:1.05em; color:#eab308;">&#x1F6A9;</span></span>`;
+    const round = flagDiv.querySelector('.flag-round');
+    const checkbox = flagDiv.querySelector('input');
+    round.onclick = () => {
+      checkbox.checked = !checkbox.checked;
+      flagStates[q.q] = checkbox.checked;
+      renderQuestions();
+    };
+    checkbox.onchange = (e) => {
       flagStates[q.q] = e.target.checked;
       renderQuestions();
     };
