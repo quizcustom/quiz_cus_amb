@@ -5,9 +5,12 @@
 <meta charset="UTF-8">
 <title>Quiz Practice - 4 Sets</title>
 <style>
-.checkbox-level2 input[type="checkbox"] {
-  transition: transform 0.2s;
-}
+  .checkbox-level2 input[type="checkbox"] {
+    transition: transform 0.2s;
+    accent-color: #B3E0F6;
+    background-color: #B3E0F6;
+    border-color: #B3E0F6;
+  }
 /* Ngăn scale khi tap trên mobile */
 .checkbox-level2 input[type="checkbox"]:active {
   transform: none !important;
@@ -46,6 +49,12 @@ button:hover { background: #1e40af; }
   align-items: center;
 }
 .flag-round {
+  transition: background 0.2s;
+}
+.flag-round.flag-active {
+  background: #B3E0F6 !important;
+  box-shadow: 0 2px 6px rgba(179,224,246,0.25);
+}
   width: 2em;
   height: 2em;
   border-radius: 50%;
@@ -346,14 +355,17 @@ function renderQuestions() {
     const isFlagged = flagStates[q.q] || false;
     const flagDiv = document.createElement("div");
     flagDiv.className = "flag-container";
-  flagDiv.innerHTML = `<span class="flag-round"><input type="checkbox" class="flag-checkbox" ${isFlagged ? "checked" : ""} style="display:none;"><span style="font-size:1.3em; color:#eab308;">&#x1F6A9;</span></span>`;
+    flagDiv.style.float = "left";
+    flagDiv.style.marginRight = "10px";
+    flagDiv.innerHTML = `<span class="flag-round${isFlagged ? ' flag-active' : ''}"><input type="checkbox" class="flag-checkbox" ${isFlagged ? "checked" : ""} style="display:none;"><span style="font-size:1.3em; color:#eab308;">&#x1F6A9;</span></span>`;
     flagDiv.querySelector("input").onchange = (e) => {
       flagStates[q.q] = e.target.checked;
-      if (document.getElementById('showFlaggedOnly').checked) renderQuestions();
+      renderQuestions();
     };
     div.appendChild(flagDiv);
 
     const qText = document.createElement("p");
+    qText.style.marginLeft = "2.5em";
     qText.innerText = `Q${i + 1}: ${q.q}`;
     div.appendChild(qText);
 
