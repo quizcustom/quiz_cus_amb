@@ -51,22 +51,23 @@ button:hover { background: #90c8e0; }
   width: 0;
   height: 1.25em;
   background: transparent;
-  border-radius: 2px;
+  border-radius: 2px 0 0 2px;
   box-shadow: 0 0 2px rgba(0,0,0,0.08);
+  margin-right: 8px;
+  flex-shrink: 0;
+  transition: width 0.2s, background 0.2s;
+}
 .option.correct .option-mark {
   background: #10b981;
   width: 8px;
 }
 .option.correct.wrong-selected .option-mark {
+  background: #10b981;
   width: 4px;
 }
 .option.wrong .option-mark {
   background: #ef4444;
   width: 8px;
-}
-  border-radius: 2px 0 0 2px;
-  margin-right: 8px;
-  flex-shrink: 0;
 }
   .option input[type="radio"] {
     margin-right: 10px;
