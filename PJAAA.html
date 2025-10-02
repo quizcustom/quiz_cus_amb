@@ -34,8 +34,34 @@ button:hover { background: #1e40af; }
 .option.wrong { background: #fee2e2; border: 1px solid #ef4444; }
 .collapsible { max-height: 200px; overflow-y: auto; transition: max-height 0.3s ease; }
 .collapsed { display: none; }
-.flag-checkbox { margin-right: 10px; cursor: pointer; }
-.flag-container { margin-bottom: 10px; display: flex; align-items: center; }
+.flag-checkbox {
+  margin-right: 0;
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+  font-size: 1.2em;
+  color: #eab308;
+  display: flex;
+  align-items: center;
+}
+.flag-round {
+  width: 2em;
+  height: 2em;
+  border-radius: 50%;
+  background: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+  margin-right: 12px;
+  margin-left: -8px;
+}
+.flag-container {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
 
 @media (max-width: 600px) {
 }
@@ -320,7 +346,7 @@ function renderQuestions() {
     const isFlagged = flagStates[q.q] || false;
     const flagDiv = document.createElement("div");
     flagDiv.className = "flag-container";
-    flagDiv.innerHTML = `<input type="checkbox" class="flag-checkbox" ${isFlagged ? "checked" : ""}> <span>Flag</span>`;
+  flagDiv.innerHTML = `<span class="flag-round"><input type="checkbox" class="flag-checkbox" ${isFlagged ? "checked" : ""} style="display:none;"><span style="font-size:1.3em; color:#eab308;">&#x1F6A9;</span></span>`;
     flagDiv.querySelector("input").onchange = (e) => {
       flagStates[q.q] = e.target.checked;
       if (document.getElementById('showFlaggedOnly').checked) renderQuestions();
