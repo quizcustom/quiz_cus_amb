@@ -27,11 +27,35 @@
 .controls-row label { margin-right: 10px; }
 .button-row { display: flex; justify-content: space-between; margin: 10px 0; gap: 10px; flex-wrap: wrap; }
 button { padding: 6px 14px; border: none; border-radius: 8px; cursor: pointer; background: #2563eb; color: white; font-weight: bold; }
-button:hover { background: #1e40af; }
+button { padding: 6px 14px; border: none; border-radius: 8px; cursor: pointer; background: #B3E0F6; color: #2563eb; font-weight: bold; }
+button:hover { background: #90c8e0; }
   .question { margin-bottom: 20px; padding: 15px; background: #fff; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); font-size: 0.95em; }
 .question p { font-weight: bold; margin: 0 0 10px 0; }
   .option { display: block; margin: 1px 0; padding: 5px; border-radius: 6px; cursor: pointer; transition: background 0.2s; font-size: 0.95em; line-height: 1.15; }
-  .option input[type="radio"] { margin-right: 10px; width: 0.9em; height: 0.9em; }
+  .option input[type="radio"] {
+    margin-right: 10px;
+    width: 1em;
+    height: 1em;
+    border-radius: 0;
+    border: none;
+    background: #fff;
+    box-shadow: none;
+  }
+  .option input[type="radio"]:checked {
+    background: #fff;
+  }
+  .option.correct input[type="radio"]:checked {
+    background: #d1fae5;
+  }
+  .option.wrong input[type="radio"]:checked {
+    background: #fee2e2;
+  }
+  }
+  .option.correct input[type="radio"],
+  .option.wrong input[type="radio"] {
+    box-shadow: none;
+  }
+  }
 .option:hover { background: #f1f5f9; }
 .option.correct { background: #d1fae5; border: 1px solid #10b981; }
 .option.wrong { background: #fee2e2; border: 1px solid #ef4444; }
@@ -58,7 +82,7 @@ button:hover { background: #1e40af; }
   width: 1.2em;
   height: 1.2em;
   border-radius: 50%;
-  background: #f3f4f6;
+  background: #fecaca;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -157,7 +181,7 @@ button:hover { background: #1e40af; }
 </head>
 <body>
 <div class="container">
-  <div class="version-bar" style="text-align:center; font-size:0.95em; color:#555; margin-bottom:8px; font-weight:bold;">version 1.0.7</div>
+  <div class="version-bar" style="text-align:center; font-size:0.95em; color:#555; margin-bottom:8px; font-weight:bold;">version 1.0.8</div>
 
   <!-- Question Sets -->
   <div class="box-level1">
