@@ -15,10 +15,10 @@
  
 body { font-family: Arial, sans-serif; display: flex; justify-content: center; padding: 20px; background: #f9fafb; font-size: 0.95em; }
 .container { width: 80%; max-width: 700px; }
-.box-level1 { border-radius: 0; border: none; padding: 15px; margin-bottom: 20px; background: #fff; }
+.box-level1 { border: 2px solid #333; border-radius: 12px; padding: 15px; margin-bottom: 20px; background: #fff; }
 .box-level1 h2 { margin: 0 0 10px 0; font-size: 18px; cursor: pointer; user-select: none; }
 .box-content { margin-top: 10px; }
-.checkbox-level2 { display: block; width: 100%; padding: 4px 10px; margin: 2px 0; border: none; cursor: pointer; transition: all 0.2s; box-sizing: border-box; min-height: 28px; }
+.checkbox-level2 { display: block; width: 100%; padding: 4px 10px; margin: 2px 0; border: 1px solid #aaa; border-radius: 20px; cursor: pointer; transition: all 0.2s; box-sizing: border-box; min-height: 28px; }
 /* .checkbox-level2:hover { transform: scale(0.995); background-color: #f1f5f9; } */
 .controls-row { display: flex; justify-content: space-between; margin-bottom: 10px; }
 .controls-row label { margin-right: 10px; }
@@ -27,7 +27,7 @@ button { padding: 6px 14px; border: none; border-radius: 8px; cursor: pointer; b
 button:hover { background: #1e40af; }
 .question { margin-bottom: 20px; padding: 15px; background: #fff; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
 .question p { font-weight: bold; margin: 0 0 10px 0; }
-.option { display: block; margin: 6px 0; padding: 8px; border-radius: 0; border: none; cursor: pointer; transition: background 0.2s; }
+.option { display: block; margin: 6px 0; padding: 8px; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
 .option input[type="radio"] {
   border: none;
   margin-right: 10px;
@@ -125,7 +125,7 @@ button:hover { background: #1e40af; }
 </head>
 <body>
 <div class="container">
-  <div class="version-bar" style="text-align:center; font-size:0.95em; color:#555; margin-bottom:8px; font-weight:bold;">version 2.3</div>
+  <div class="version-bar" style="text-align:center; font-size:0.95em; color:#555; margin-bottom:8px; font-weight:bold;">version 2.1</div>
 
   <!-- Question Sets -->
   <div class="box-level1">
@@ -220,7 +220,22 @@ async function loadAllCSV() {
 
 // Gọi khi mở trang
 loadAllCSV();
-
+/* ...existing code... */
+.box-level1 {
+  padding: 8px;           /* giảm padding */
+  margin-bottom: 12px;    /* giảm khoảng cách giữa các box */
+  border-radius: 8px;     /* giảm bo góc */
+}
+.question {
+  padding: 8px;           /* giảm padding box câu hỏi */
+  margin-bottom: 12px;    /* giảm khoảng cách giữa các câu hỏi */
+  border-radius: 6px;     /* giảm bo góc */
+}
+.option {
+  margin: 3px 0;          /* giảm khoảng cách giữa các đáp án */
+  padding: 6px;           /* giảm padding đáp án */
+}
+/* ...existing code... */
 // ======================= Functions =======================
 function toggleBox(id){document.getElementById(id).classList.toggle("collapsed");}
 
