@@ -125,7 +125,7 @@ button:hover { background: #1e40af; }
 </head>
 <body>
 <div class="container">
-  <div class="version-bar" style="text-align:center; font-size:0.95em; color:#555; margin-bottom:8px; font-weight:bold;">version 2.0</div>
+  <div class="version-bar" style="text-align:center; font-size:0.95em; color:#555; margin-bottom:8px; font-weight:bold;">version 2.1</div>
 
   <!-- Question Sets -->
   <div class="box-level1">
@@ -431,6 +431,8 @@ function loadSelectedSets(){
   renderQuestions();
   // Hiện các box phía dưới
   document.getElementById('belowSets').style.display = '';
+  // Thu gọn Question Sets
+  document.getElementById('setsBox').classList.add('collapsed');
 }
 window.onload = function() {
   // Ẩn các box phía dưới khi chưa nhấn Load Selected Set
