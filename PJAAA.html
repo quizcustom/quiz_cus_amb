@@ -410,3 +410,129 @@
                 </form>
             </div>
         </div>
+        <div class="content">
+            <p style="text-align:center;color:#777;">(Questions will appear here)</p>
+        </div>
+    </div>
+    <button id="toggleBtn">Review & Final Score</button>
+    <div class="navigation-board" id="navigationBoard">
+        <h2 style="color:rgb(47,116,206);">Questions</h2>
+        <div id="score-text" class="score-text">Hello</div>
+
+        <form id="navigationForm">
+            <div class="question-grid"></div>
+        </form>
+
+        <button id="submitAll">Final Score</button>
+        <button id="doAgainBtn">Again</button>
+        <button id="homePage">Home</button>
+    </div>
+    <script>
+        // Submit file selection validation
+        document.querySelector('.submit-files').addEventListener('click', function(e) {
+            const checked = document.querySelectorAll('input[name="selectedFiles[]"]:checked');
+            if (checked.length === 0) {
+                e.preventDefault();
+                alert('Please select at least one question set.');
+            }
+        });
+
+        // Quiz logic
+        const instantFeedbackEnabled = true;
+
+        document.getElementById('submitAll').addEventListener('click', function() {
+            if (instantFeedbackEnabled) {
+                calculateFinalScore();
+            } else {
+                showAnswersAndCalculateScore();
+            }
+            this.style.display = 'none';
+            document.getElementById('doAgainBtn').style.visibility = 'visible';
+            document.getElementById('homePage').style.visibility = 'visible';
+        });
+
+        function calculateFinalScore() {
+            const totalQuestions = 229;
+            let values = [];
+            for (let q = 0; q < totalQuestions; q++) {
+                let form = document.getElementById(`form-${q}`);
+                if (!form) continue;
+                let radios = form.querySelectorAll('input[type="radio"]');
+                let answered = false;
+                radios.forEach(r => {
+                    if (r.checked) {
+                        values.push(r.value);
+                        answered = true;
+                    }
+                });
+                if (!answered) values.push('0');
+            }
+            let correct = values.filter(v => v == '1').length;
+            let percent = (correct / values.length) * 100;
+            document.getElementById('score-text').textContent = `Final Score: ${percent.toFixed(2)}%`;
+            document.getElementById('score-text').style.visibility = 'visible';
+            updateNavigationBoxes(values);
+        }
+
+        function showAnswersAndCalculateScore() {
+            const totalQuestions = 229;
+            let values = [];
+            for (let q = 0; q < totalQuestions; q++) {
+                let form = document.getElementById(`form-${q}`);
+                if (!form) continue;
+                let radios = form.querySelectorAll('input[type="radio"]');
+                let answered = false;
+                radios.forEach(r => {
+                    if (r.checked) {
+                        values.push(r.value);
+                        answered = true;
+                    }
+                });
+                if (!answered) values.push('0');
+            }
+            let correct = values.filter(v => v == '1').length;
+            let percent = (correct / values.length) * 100;
+            document.getElementById('score-text').textContent = `Score: ${percent.toFixed(2)}%`;
+            document.getElementById('score-text').style.visibility = 'visible';
+            updateNavigationBoxes(values);
+            showCorrectAnswers();
+        }
+
+        function updateNavigationBoxes(values) {
+            const totalQuestions = 229;
+            for (let i = 0; i < totalQuestions; i++) {
+                let navBox = document.getElementById('nav-question-' + i);
+                if (!navBox) continue;
+                let el = navBox.querySelector('.question-number');
+                if (values[i] == '1') el.classList.add('correct');
+                else el.classList.add('incorrect');
+            }
+        }
+
+        function showCorrectAnswers() {
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                if (radio.getAttribute('data-correct2') === '1') {
+                    radio.parentElement.classList.add('correct-answer');
+                }
+            });
+        }
+
+        function toggleFileSelection() {
+            const section = document.querySelector('.file-selection');
+            section.classList.toggle('collapsed');
+            const content = section.querySelector('.file-selection-content');
+            if (section.classList.contains('collapsed')) {
+                content.style.maxHeight = '0';
+            } else {
+                content.style.maxHeight = content.scrollHeight + 'px';
+            }
+        }
+
+        function selectAllQuestions() {
+            document.getElementById('startQuestion').value = 1;
+            document.getElementById('endQuestion').value = 229;
+            document.getElementById('numQuestions').value = 229;
+        }
+    </script>
+</body>
+</html>
