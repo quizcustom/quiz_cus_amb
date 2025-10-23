@@ -334,3 +334,31 @@
             <div class="back-arrow" onclick="window.location.href='index.php'">←</div>
             <h1>Basic</h1>
         </header>
+        <!-- Add File Selection Form -->
+        <div class="file-selection collapsed">
+            <div class="file-selection-header" onclick="toggleFileSelection()">
+                <h3>Question Sets</h3>
+                <span class="toggle-icon">▼</span>
+            </div>
+
+            <div class="file-selection-content">
+                <form>
+                    <div class="file-selection-container">
+                        <label class="file-checkbox-label">
+                            <input type="checkbox" name="selectedFiles[]" value="Basic_csv_files/2025_Module01_B1.csv" checked>
+                            <span>2025_Module01_B1</span>
+                        </label>
+
+                        <label class="file-checkbox-label">
+                            <input type="checkbox" name="selectedFiles[]" value="Basic_csv_files/2025_Module02_B1.csv">
+                            <span>2025_Module02_B1</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="submit-files">Load Selected Sets</button>
+                    <div class="selected-count">
+                        <span id="selectedCount">1</span> sets selected
+                    </div>
+                </form>
+            </div>
+        </div>
