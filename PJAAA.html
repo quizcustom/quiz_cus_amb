@@ -1,23 +1,51 @@
-<html lang="en"><head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <title>Basic</title>
-    
 
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Basic</title>
     <style>
+        body {
+            margin: 0;
+            font-family: sans-serif;
+        }
+
+        .main-container {
+            margin: 0 auto;
+            max-width: 800px;
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            align-items: center;
+            background: #f4f4f4;
+            padding: 20px;
+        }
+
+        header h1 {
+            margin: 0;
+            color: #333;
+            flex-grow: 1;
+            text-align: left;
+        }
+
+        .back-arrow {
+            font-size: 40px;
+            margin-right: 20px;
+            cursor: pointer;
+        }
+
+        /* File Selection */
         .file-selection {
             margin: 20px 0;
             padding: 20px;
-            background-color: #ffffff;
+            background: #fff;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
+            transition: .3s;
         }
 
         .file-selection.collapsed {
@@ -32,7 +60,7 @@
             user-select: none;
             position: sticky;
             top: 0;
-            background-color: #ffffff;
+            background: #fff;
             z-index: 1;
             padding-bottom: 10px;
         }
@@ -45,16 +73,16 @@
 
         .toggle-icon {
             font-size: 1.5em;
-            transition: transform 0.3s ease;
-            transform: rotate(-180deg); /* Start upside down */
+            transition: .3s;
+            transform: rotate(-180deg);
         }
 
         .collapsed .toggle-icon {
-            transform: rotate(0deg); /* Return to normal when collapsed */
+            transform: rotate(0);
         }
 
         .file-selection-content {
-            transition: all 0.3s ease;
+            transition: .3s;
             overflow: hidden;
         }
 
@@ -63,16 +91,14 @@
         }
 
         .file-selection-container {
-            max-height: 400px; /* Fixed height for scroll */
-            overflow-y: auto; /* Enable vertical scrolling */
+            max-height: 400px;
+            overflow-y: auto;
             padding: 10px;
             margin: 10px 0;
-            /* Customize scrollbar for webkit browsers */
             scrollbar-width: thin;
             scrollbar-color: #888 #f1f1f1;
         }
 
-        /* Webkit scrollbar styling */
         .file-selection-container::-webkit-scrollbar {
             width: 8px;
         }
@@ -95,21 +121,20 @@
             display: flex;
             align-items: center;
             padding: 10px;
-            background-color: #f8f9fa;
+            background: #f8f9fa;
             border-radius: 6px;
-            transition: all 0.2s ease;
+            transition: .2s;
             cursor: pointer;
             margin-bottom: 8px;
-            word-break: break-word;
             min-height: 40px;
         }
 
         .file-checkbox-label:hover {
-            background-color: #e9ecef;
+            background: #e9ecef;
             transform: translateX(5px);
         }
 
-        .file-checkbox-label input[type="checkbox"] {
+        .file-checkbox-label input[type=checkbox] {
             min-width: 18px;
             height: 18px;
             margin-right: 10px;
@@ -119,27 +144,15 @@
         .file-checkbox-label span {
             flex: 1;
             overflow-wrap: break-word;
-            word-wrap: break-word;
-            hyphens: auto;
         }
 
-        /* Special styling for priority files (starting with 'c_') */
         .file-checkbox-label.priority-file {
-            background-color: #e3f2fd; /* Pantone-inspired color */
+            background: #e3f2fd;
             border-left: 4px solid #64b5f6;
         }
 
         .file-checkbox-label.priority-file:hover {
-            background-color: #bbdefb;
-        }
-
-        /* Styling for 2024 files */
-        .file-checkbox-label.year-2024 {
-            background-color: #f8f9fa;
-        }
-
-        .file-checkbox-label.year-2024:hover {
-            background-color: #e9ecef;
+            background: #bbdefb;
         }
 
         .submit-files {
@@ -147,18 +160,18 @@
             width: 200px;
             margin: 20px auto;
             padding: 12px 24px;
-            background-color: rgb(47, 116, 206);
-            color: white;
+            background: rgb(47, 116, 206);
+            color: #fff;
             border: none;
             border-radius: 6px;
             cursor: pointer;
             font-size: 1em;
-            transition: all 0.2s ease;
+            transition: .2s;
             text-align: center;
         }
 
         .submit-files:hover {
-            background-color: rgb(39, 98, 173);
+            background: rgb(39, 98, 173);
             transform: translateY(-2px);
         }
 
@@ -170,1085 +183,148 @@
             text-align: center;
             color: #666;
             margin-top: 10px;
-            font-size: 0.9em;
+            font-size: .9em;
             position: sticky;
             bottom: 0;
-            background-color: #ffffff;
+            background: #fff;
             padding: 10px 0;
+        }
+
+        /* Question Selection */
+        .question-selection-card {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .question-selection-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .question-selection-header .title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .question-selection-header .total-questions {
+            font-size: .875rem;
+            color: #6b7280;
+        }
+
+        .question-selection-content {
+            padding: 24px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        .form-control {
+            flex: 1;
+            min-width: 12px;
+        }
+
+        .form-control label {
+            display: block;
+            font-size: .875rem;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .form-control input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            transition: .2s;
+        }
+
+        .form-control input:focus {
+            outline: none;
+            border-color: rgb(47, 116, 206);
+            box-shadow: 0 0 0 2px rgba(47, 116, 206, .2);
+        }
+
+        .form-control2 {
+            margin: 10px 0;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 16px;
+        }
+
+        .all-questions-btn {
+            padding: 8px 16px;
+            background: rgb(47, 116, 206);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .all-questions-btn:hover {
+            background: rgb(35, 87, 155);
+        }
+
+        .reload-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #f3f4f6;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: .2s;
+        }
+
+        .reload-button:hover {
+            background: #e5e7eb;
+        }
+
+        .reload-icon {
+            font-size: 1.25rem;
+            color: #6b7280;
+        }
+
+        /* Selected-count giữ nguyên cấu trúc */
+        .navigation-board {
+            position: fixed;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 250px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background: lightgrey;
+            overflow-y: auto;
+            z-index: 1;
+            opacity: .9;
+        }
+
+        .score-text {
+            margin-bottom: 20px;
+            font-size: x-large;
+            font-weight: bold;
+            visibility: hidden;
+            text-decoration: underline;
+            color: rgb(47, 116, 206);
         }
     </style>
 </head>
-<body>
-<div class="main-container">
-    <header>
-        <div class="back-arrow" onclick="window.location.href='index.php'">←</div>
-        <h1>Basic</h1>
-    </header>
-
-    <!-- Add File Selection Form -->
-    <div class="file-selection collapsed">
-        <div class="file-selection-header" onclick="toggleFileSelection()">
-            <h3>Question Sets</h3>
-            <span class="toggle-icon">▼</span>
-        </div>
-        <div class="file-selection-content" style="max-height: 0px;">
-            <form method="post" action="">
-                <div class="file-selection-container">
-                                        <label class="file-checkbox-label ">
-                        <input type="checkbox" name="selectedFiles[]" value="Basic_csv_files/2025_Module01_B1.csv" checked="">
-                        <span>2025_Module01_B1</span>
-                    </label>
-                                        <label class="file-checkbox-label ">
-                        <input type="checkbox" name="selectedFiles[]" value="Basic_csv_files/2025_Module02_B1.csv">
-                        <span>2025_Module02_B1</span>
-                    </label>
-                                    </div>
-                <button type="submit" class="submit-files">Load Selected Sets</button>
-                <div class="selected-count">
-                    <span id="selectedCount">1</span> sets selected
-                </div>
-            </form>
-        </div>
-    </div>
-
-            <!-- Your existing form for question range selection -->
-        <div class="question-selection-card">
-        <div class="question-selection-header">
-            <div class="title">Question Range Selection</div>
-            <div class="total-questions">
-                Selected modules have 229 questions
-            </div>
-        </div>
-        <div class="question-selection-content">
-            <form id="testForm" action="" method="post">
-                <div class="form-control2">
-                    <label for="fixedMode" class="file-checkbox-label">
-                        <input type="checkbox" id="fixedMode" name="fixedMode" checked="">
-                        <span class="label-text2">Fixed Mode</span>
-                    </label>
-                </div>
-                <div class="form-control2">
-                    <label for="instantFeedback" class="file-checkbox-label">
-                        <input type="checkbox" id="instantFeedback" name="instantFeedback" checked="">
-                        <span class="label-text2">Instant Feedback Mode</span>
-                    </label>
-                </div>
-                <div class="input-group">
-                    <div class="form-control">
-                        <label for="startQuestion">Start Question</label>
-                        <input type="number" id="startQuestion" name="startQuestion" min="1" max="229" value="1" required="">
-                    </div>
-                    
-                    <div class="form-control">
-                        <label for="endQuestion">End Question</label>
-                        <input type="number" id="endQuestion" name="endQuestion" min="1" max="229" value="229" required="">
-                    </div>
-                    
-                    <div class="form-control">
-                        <label for="numQuestions">Num. Questions</label>
-                        <input type="number" id="numQuestions" name="numQuestions" min="1" max="229" value="229" required="">
-                    </div>
-                </div>
-                
-                <div class="button-group">
-                    <button type="button" class="all-questions-btn" onclick="selectAllQuestions()">
-                        All Questions
-                    </button>
-                    <button type="submit" class="reload-button">
-                        <span class="reload-icon"></span>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-        <!-- Your existing content div with questions -->
-        <div class="content">
-            <div class="question-container instant-feedback" id="question-0" data-correct-answer="20."><div class="question-header" style="display: block; justify-content: space-between; align-items: center; position: relative;"><strong><u>Question 1.</u> If y/x = 4 and x = 5 then y = (Level 2)</strong><div style="position: absolute; right: 0; top: 50%; transform: translateY(-50%);"><div id="ok-text0" class="ok-text" style="position: absolute; right: 0;">✗</div><div id="ok2-text0" class="ok2-text" style="position: absolute; right: 0;">✓</div><div style="position: absolute; right: 0; top: 50%; transform: translateY(-50%);"><div id="instant-feedback-0" class="instant-feedback-indicator show incorrect">✗</div><div id="ok-text0" class="ok-text" style="position: absolute; right: 0;">✗</div><div id="ok2-text0" class="ok2-text" style="position: absolute; right: 0;">✓</div></div></div></div><form id="form-0" action="#question-0" method="post"><label class="selected-incorrect">
-                                <input type="radio" name="answer0" onchange="handleInstantFeedback(0, this); highlightNavBox(0)" value="0" data-correct2="0" data-question="0">
-                                1 ¼.
-                            </label><label class="show-correct">
-                                <input type="radio" name="answer0" onchange="handleInstantFeedback(0, this); highlightNavBox(0)" value="1" data-correct2="1" data-question="0">
-                                20.
-                            </label><label class="">
-                                <input type="radio" name="answer0" onchange="handleInstantFeedback(0, this); highlightNavBox(0)" value="0" data-correct2="0" data-question="0">
-                                4/5.
-                            </label></form></div><div class="question-container instant-feedback" id="question-1" data-correct-answer="1/9."><div class="question-header" style="display: block; justify-content: space-between; align-items: center; position: relative;"><strong><u>Question 2.</u> 27y = 3 so y is equal to:. (Level 2)</strong><div style="position: absolute; right: 0; top: 50%; transform: translateY(-50%);"><div id="ok-text1" class="ok-text" style="position: absolute; right: 0;">✗</div><div id="ok2-text1" class="ok2-text" style="position: absolute; right: 0;">✓</div><div style="position: absolute; right: 0; top: 50%; transform: translateY(-50%);"><div id="instant-feedback-1" class="instant-feedback-indicator"></div><div id="ok-text1" class="ok-text" style="position: absolute; right: 0;">✗</div><div id="ok2-text1" class="ok2-text" style="position: absolute; right: 0;">✓</div></div></div></div><form id="form-1" action="#question-1" method="post"><label>
-                                <input type="radio" name="answer1" onchange="handleInstantFeedback(1, this); highlightNavBox(1)" value="1" data-correct2="1" data-question="1">
-                                1/9.
-                            </label><label>
-                                <input type="radio" name="answer1" onchange="handleInstantFeedback(1, this); highlightNavBox(1)" value="0" data-correct2="0" data-question="1">
-                                1/3.
-                            </label><label>
-                                <input type="radio" name="answer1" onchange="handleInstantFeedback(1, this); highlightNavBox(1)" value="0" data-correct2="0" data-question="1">
-                                9/1.
-                            </label></form></div><div class="question-container instant-feedback" id="question-2" data-correct-answer="x-7cb/L."><div class="question-header" style="display: block; justify-content: space-between; align-items: center; position: relative;"><strong><u>Question 3.</u> If x in an equation equals Ly + 7cb, define the formula for finding the subject y. (Level 2)</strong><div style="position: absolute; right: 0; top: 50%; transform: translateY(-50%);"><div id="ok-text2" class="ok-text" style="position: absolute; right: 0;">✗</div><div id="ok2-text2" class="ok2-text" style="position: absolute; right: 0;">✓</div><div style="position: absolute; right: 0; top: 50%; transform: translateY(-50%);"><div id="instant-feedback-2" class="instant-feedback-indicator"></div><div id="ok-text2" class="ok-text" style="position: absolute; right: 0;">✗</div><div id="ok2-text2" class="ok2-text" style="position: absolute; right: 0;">✓</div></div></div></div><form id="form-2" action="#question-2" method="post"><label>
-                                <input type="radio" name="answer2" onchange="handleInstantFeedback(2, this); highlightNavBox(2)" value="0" data-correct2="0" data-question="2">
-                                x+7cb/L.
-                            </label><label>
-                                <input type="radio" name="answer2" onchange="handleInstantFeedback(2, this); highlightNavBox(2)" value="1" data-correct2="1" data-question="2">
-                                x-7cb/L.
-                            </label><label>
-                                <input type="radio" name="answer2" onchange="handleInstantFeedback(2, this); highlightNavBox(2)" value="0" data-correct2="0" data-question="2">
-                                x-L/7cb.
-                            </label></form></div><div class="question-container instant-feedback" id="question-3" data-correct-answer="25."><div class="question-header" style="display: block; justify-content: space-between; align-items: center; position: relative;"><strong><u>Question 4.</u> Solve the following equations for x: 4x+8y=64 2x-8y=86. (Level 1)</strong><div style="position: absolute; right: 0; top: 50%; transform: translateY(-50%);"><div id="ok-text3" class="ok-text" style="position: absolute; right: 0;">✗</div><div id="ok2-text3" class="ok2-text" style="position: absolute; right: 0;">✓</div><div style="position: absolute; right: 0; top: 50%; transform: translateY(-50%);"><div id="instant-feedback-3" class="instant-feedback-indicator"></div><div id="ok-text3" class="ok-text" style="position: absolute; right: 0;">✗</div><div id="ok2-text3" class="ok2-text" style="position: absolute; right: 0;">✓</div></div></div></div><form id="form-3" action="#question-3" method="post"><label>
-                                <input type="radio" name="answer3" onchange="handleInstantFeedback(3, this); highlightNavBox(3)" value="0" data-correct2="0" data-question="3">
-                                125.
-                            </label><label>
-                                <input type="radio" name="answer3" onchange="handleInstantFeedback(3, this); highlightNavBox(3)" value="1" data-correct2="1" data-question="3">
-                                25.
-                            </label><label>
-                                <input type="radio" name="answer3" onchange="handleInstantFeedback(3, this); highlightNavBox(3)" value="0" data-correct2="0" data-question="3">
-                                5.
-                            </label></form></div><div class="question-container instant-feedback" id="question-4" data-correct-answer="8."><div class="question-header" style="display: block; justify-content: space-between; align-items: center; position: relative;"><strong><u>Question 5.</u> Octal is to the base of. (Level 2)</strong><div style="position: absolute; right: 0; top: 50%; transform: translateY(-50%);"><div id="ok-text4" class="ok-text" style="position: absolute; right: 0;">✗</div><div id="ok2-text4" class="ok2-text" style="position: absolute; right: 0;">✓</div><div style="position: absolute; right: 0; top: 50%; transform: translateY(-50%);"><div id="instant-feedback-4" class="instant-feedback-indicator"></div><div id="ok-text4" class="ok-text" style="position: absolute; right: 0;">✗</div><div id="ok2-text4" class="ok2-text" style="position: absolute; right: 0;">✓</div></div></div></div><form id="form-4" action="#question-4" method="post"><label>
-                                <input type="radio" name="answer4" onchange="handleInstantFeedback(4, this); highlightNavBox(4)" value="0" data-correct2="0" data-question="4">
-                                2.
-                            </label><label>
-                                <input type="radio" name="answer4" onchange="handleInstantFeedback(4, this); highlightNavBox(4)" value="0" data-correct2="0" data-question="4">
-                                16.
-                            </label><label>
-                                <input type="radio" name="answer4" onchange="handleInstantFeedback(4, this); highlightNavBox(4)" value="1" data-correct2="1" data-question="4">
-                                8.
-                            </label></form></div><div class="question-container instant-feedback" id="question-5" data-correct-answer="11."><div class="question-header" style="display: block; justify-content: space-between; align-items: center; position: relative;"><strong><u>Question 6.</u> What is octal 13 in base 10?. (Level 1)</strong><div style="position: absolute; right: 0; top: 50%; transform: translateY(-50%);"><div id="ok-text5" class="ok-text" style="position: absolute; right: 0;">✗</div><div id="ok2-text5" class="ok2-text" style="position: absolute; right: 0;">✓</div><div style="position: absolute; right: 0; top: 50%; transform: translateY(-50%);"><div id="instant-feedback-5" class="instant-feedback-indicator"></div><div id="ok-text5" class="ok-text" style="position: absolute; right: 0;">✗</div><div id="ok2-text5" class="ok2-text" style="position: absolute; right: 0;">✓</div></div></div></div><form id="form-5" action="#question-5" method="post"><label>
-                                <input type="radio" name="answer5" onchange="handleInstantFeedback(5, this); highlightNavBox(5)" value="1" data-correct2="1" data-question="5">
-                                11.
-                            </label><label>
-                                <input type="radio" name="answer5" onchange="handleInstantFeedback(5, this); highlightNavBox(5)" value="0" data-correct2="0" data-question="5">
-                                5.
-                            </label><label>
-                                <input type="radio" name="answer5" onchange="handleInstantFeedback(5, this); highlightNavBox(5)" value="0" data-correct2="0" data-question="5">
-                                4.
-                            </label></form></div>        </div>
-        <br><br><br><br><br>
-</div>
-<!-- Toggle Button -->
-<button id="toggleBtn">Review &amp; Final Score</button>
-
-<!-- Navigation Board -->
-<div class="navigation-board" id="navigationBoard">
-    <h2 style="color: rgb(47, 116, 206);">Questions</h2>
-    <div id="score-text" class="score-text">Hello</div>    <form id="navigationForm" action="" method="post">
-        <div class="question-grid">
-            <div class="question-row"><div class="question-cell" id="nav-question-0"><a href="#question-0"><div class="question-number answered">1</div></a></div><div class="question-cell" id="nav-question-1"><a href="#question-1"><div class="question-number">2</div></a></div><div class="question-cell" id="nav-question-2"><a href="#question-2"><div class="question-number">3</div></a></div><div class="question-cell" id="nav-question-3"><a href="#question-3"><div class="question-number">4</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-4"><a href="#question-4"><div class="question-number">5</div></a></div><div class="question-cell" id="nav-question-5"><a href="#question-5"><div class="question-number">6</div></a></div><div class="question-cell" id="nav-question-6"><a href="#question-6"><div class="question-number">7</div></a></div><div class="question-cell" id="nav-question-7"><a href="#question-7"><div class="question-number">8</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-8"><a href="#question-8"><div class="question-number">9</div></a></div><div class="question-cell" id="nav-question-9"><a href="#question-9"><div class="question-number">10</div></a></div><div class="question-cell" id="nav-question-10"><a href="#question-10"><div class="question-number">11</div></a></div><div class="question-cell" id="nav-question-11"><a href="#question-11"><div class="question-number">12</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-12"><a href="#question-12"><div class="question-number">13</div></a></div><div class="question-cell" id="nav-question-13"><a href="#question-13"><div class="question-number">14</div></a></div><div class="question-cell" id="nav-question-14"><a href="#question-14"><div class="question-number">15</div></a></div><div class="question-cell" id="nav-question-15"><a href="#question-15"><div class="question-number">16</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-16"><a href="#question-16"><div class="question-number">17</div></a></div><div class="question-cell" id="nav-question-17"><a href="#question-17"><div class="question-number">18</div></a></div><div class="question-cell" id="nav-question-18"><a href="#question-18"><div class="question-number">19</div></a></div><div class="question-cell" id="nav-question-19"><a href="#question-19"><div class="question-number">20</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-20"><a href="#question-20"><div class="question-number">21</div></a></div><div class="question-cell" id="nav-question-21"><a href="#question-21"><div class="question-number">22</div></a></div><div class="question-cell" id="nav-question-22"><a href="#question-22"><div class="question-number">23</div></a></div><div class="question-cell" id="nav-question-23"><a href="#question-23"><div class="question-number">24</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-24"><a href="#question-24"><div class="question-number">25</div></a></div><div class="question-cell" id="nav-question-25"><a href="#question-25"><div class="question-number">26</div></a></div><div class="question-cell" id="nav-question-26"><a href="#question-26"><div class="question-number">27</div></a></div><div class="question-cell" id="nav-question-27"><a href="#question-27"><div class="question-number">28</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-28"><a href="#question-28"><div class="question-number">29</div></a></div><div class="question-cell" id="nav-question-29"><a href="#question-29"><div class="question-number">30</div></a></div><div class="question-cell" id="nav-question-30"><a href="#question-30"><div class="question-number">31</div></a></div><div class="question-cell" id="nav-question-31"><a href="#question-31"><div class="question-number">32</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-32"><a href="#question-32"><div class="question-number">33</div></a></div><div class="question-cell" id="nav-question-33"><a href="#question-33"><div class="question-number">34</div></a></div><div class="question-cell" id="nav-question-34"><a href="#question-34"><div class="question-number">35</div></a></div><div class="question-cell" id="nav-question-35"><a href="#question-35"><div class="question-number">36</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-36"><a href="#question-36"><div class="question-number">37</div></a></div><div class="question-cell" id="nav-question-37"><a href="#question-37"><div class="question-number">38</div></a></div><div class="question-cell" id="nav-question-38"><a href="#question-38"><div class="question-number">39</div></a></div><div class="question-cell" id="nav-question-39"><a href="#question-39"><div class="question-number">40</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-40"><a href="#question-40"><div class="question-number">41</div></a></div><div class="question-cell" id="nav-question-41"><a href="#question-41"><div class="question-number">42</div></a></div><div class="question-cell" id="nav-question-42"><a href="#question-42"><div class="question-number">43</div></a></div><div class="question-cell" id="nav-question-43"><a href="#question-43"><div class="question-number">44</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-44"><a href="#question-44"><div class="question-number">45</div></a></div><div class="question-cell" id="nav-question-45"><a href="#question-45"><div class="question-number">46</div></a></div><div class="question-cell" id="nav-question-46"><a href="#question-46"><div class="question-number">47</div></a></div><div class="question-cell" id="nav-question-47"><a href="#question-47"><div class="question-number">48</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-48"><a href="#question-48"><div class="question-number">49</div></a></div><div class="question-cell" id="nav-question-49"><a href="#question-49"><div class="question-number">50</div></a></div><div class="question-cell" id="nav-question-50"><a href="#question-50"><div class="question-number">51</div></a></div><div class="question-cell" id="nav-question-51"><a href="#question-51"><div class="question-number">52</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-52"><a href="#question-52"><div class="question-number">53</div></a></div><div class="question-cell" id="nav-question-53"><a href="#question-53"><div class="question-number">54</div></a></div><div class="question-cell" id="nav-question-54"><a href="#question-54"><div class="question-number">55</div></a></div><div class="question-cell" id="nav-question-55"><a href="#question-55"><div class="question-number">56</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-56"><a href="#question-56"><div class="question-number">57</div></a></div><div class="question-cell" id="nav-question-57"><a href="#question-57"><div class="question-number">58</div></a></div><div class="question-cell" id="nav-question-58"><a href="#question-58"><div class="question-number">59</div></a></div><div class="question-cell" id="nav-question-59"><a href="#question-59"><div class="question-number">60</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-60"><a href="#question-60"><div class="question-number">61</div></a></div><div class="question-cell" id="nav-question-61"><a href="#question-61"><div class="question-number">62</div></a></div><div class="question-cell" id="nav-question-62"><a href="#question-62"><div class="question-number">63</div></a></div><div class="question-cell" id="nav-question-63"><a href="#question-63"><div class="question-number">64</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-64"><a href="#question-64"><div class="question-number">65</div></a></div><div class="question-cell" id="nav-question-65"><a href="#question-65"><div class="question-number">66</div></a></div><div class="question-cell" id="nav-question-66"><a href="#question-66"><div class="question-number">67</div></a></div><div class="question-cell" id="nav-question-67"><a href="#question-67"><div class="question-number">68</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-68"><a href="#question-68"><div class="question-number">69</div></a></div><div class="question-cell" id="nav-question-69"><a href="#question-69"><div class="question-number">70</div></a></div><div class="question-cell" id="nav-question-70"><a href="#question-70"><div class="question-number">71</div></a></div><div class="question-cell" id="nav-question-71"><a href="#question-71"><div class="question-number">72</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-72"><a href="#question-72"><div class="question-number">73</div></a></div><div class="question-cell" id="nav-question-73"><a href="#question-73"><div class="question-number">74</div></a></div><div class="question-cell" id="nav-question-74"><a href="#question-74"><div class="question-number">75</div></a></div><div class="question-cell" id="nav-question-75"><a href="#question-75"><div class="question-number">76</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-76"><a href="#question-76"><div class="question-number">77</div></a></div><div class="question-cell" id="nav-question-77"><a href="#question-77"><div class="question-number">78</div></a></div><div class="question-cell" id="nav-question-78"><a href="#question-78"><div class="question-number">79</div></a></div><div class="question-cell" id="nav-question-79"><a href="#question-79"><div class="question-number">80</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-80"><a href="#question-80"><div class="question-number">81</div></a></div><div class="question-cell" id="nav-question-81"><a href="#question-81"><div class="question-number">82</div></a></div><div class="question-cell" id="nav-question-82"><a href="#question-82"><div class="question-number">83</div></a></div><div class="question-cell" id="nav-question-83"><a href="#question-83"><div class="question-number">84</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-84"><a href="#question-84"><div class="question-number">85</div></a></div><div class="question-cell" id="nav-question-85"><a href="#question-85"><div class="question-number">86</div></a></div><div class="question-cell" id="nav-question-86"><a href="#question-86"><div class="question-number">87</div></a></div><div class="question-cell" id="nav-question-87"><a href="#question-87"><div class="question-number">88</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-88"><a href="#question-88"><div class="question-number">89</div></a></div><div class="question-cell" id="nav-question-89"><a href="#question-89"><div class="question-number">90</div></a></div><div class="question-cell" id="nav-question-90"><a href="#question-90"><div class="question-number">91</div></a></div><div class="question-cell" id="nav-question-91"><a href="#question-91"><div class="question-number">92</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-92"><a href="#question-92"><div class="question-number">93</div></a></div><div class="question-cell" id="nav-question-93"><a href="#question-93"><div class="question-number">94</div></a></div><div class="question-cell" id="nav-question-94"><a href="#question-94"><div class="question-number">95</div></a></div><div class="question-cell" id="nav-question-95"><a href="#question-95"><div class="question-number">96</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-96"><a href="#question-96"><div class="question-number">97</div></a></div><div class="question-cell" id="nav-question-97"><a href="#question-97"><div class="question-number">98</div></a></div><div class="question-cell" id="nav-question-98"><a href="#question-98"><div class="question-number">99</div></a></div><div class="question-cell" id="nav-question-99"><a href="#question-99"><div class="question-number">100</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-100"><a href="#question-100"><div class="question-number">101</div></a></div><div class="question-cell" id="nav-question-101"><a href="#question-101"><div class="question-number">102</div></a></div><div class="question-cell" id="nav-question-102"><a href="#question-102"><div class="question-number">103</div></a></div><div class="question-cell" id="nav-question-103"><a href="#question-103"><div class="question-number">104</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-104"><a href="#question-104"><div class="question-number">105</div></a></div><div class="question-cell" id="nav-question-105"><a href="#question-105"><div class="question-number">106</div></a></div><div class="question-cell" id="nav-question-106"><a href="#question-106"><div class="question-number">107</div></a></div><div class="question-cell" id="nav-question-107"><a href="#question-107"><div class="question-number">108</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-108"><a href="#question-108"><div class="question-number">109</div></a></div><div class="question-cell" id="nav-question-109"><a href="#question-109"><div class="question-number">110</div></a></div><div class="question-cell" id="nav-question-110"><a href="#question-110"><div class="question-number">111</div></a></div><div class="question-cell" id="nav-question-111"><a href="#question-111"><div class="question-number">112</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-112"><a href="#question-112"><div class="question-number">113</div></a></div><div class="question-cell" id="nav-question-113"><a href="#question-113"><div class="question-number">114</div></a></div><div class="question-cell" id="nav-question-114"><a href="#question-114"><div class="question-number">115</div></a></div><div class="question-cell" id="nav-question-115"><a href="#question-115"><div class="question-number">116</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-116"><a href="#question-116"><div class="question-number">117</div></a></div><div class="question-cell" id="nav-question-117"><a href="#question-117"><div class="question-number">118</div></a></div><div class="question-cell" id="nav-question-118"><a href="#question-118"><div class="question-number">119</div></a></div><div class="question-cell" id="nav-question-119"><a href="#question-119"><div class="question-number">120</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-120"><a href="#question-120"><div class="question-number">121</div></a></div><div class="question-cell" id="nav-question-121"><a href="#question-121"><div class="question-number">122</div></a></div><div class="question-cell" id="nav-question-122"><a href="#question-122"><div class="question-number">123</div></a></div><div class="question-cell" id="nav-question-123"><a href="#question-123"><div class="question-number">124</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-124"><a href="#question-124"><div class="question-number">125</div></a></div><div class="question-cell" id="nav-question-125"><a href="#question-125"><div class="question-number">126</div></a></div><div class="question-cell" id="nav-question-126"><a href="#question-126"><div class="question-number">127</div></a></div><div class="question-cell" id="nav-question-127"><a href="#question-127"><div class="question-number">128</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-128"><a href="#question-128"><div class="question-number">129</div></a></div><div class="question-cell" id="nav-question-129"><a href="#question-129"><div class="question-number">130</div></a></div><div class="question-cell" id="nav-question-130"><a href="#question-130"><div class="question-number">131</div></a></div><div class="question-cell" id="nav-question-131"><a href="#question-131"><div class="question-number">132</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-132"><a href="#question-132"><div class="question-number">133</div></a></div><div class="question-cell" id="nav-question-133"><a href="#question-133"><div class="question-number">134</div></a></div><div class="question-cell" id="nav-question-134"><a href="#question-134"><div class="question-number">135</div></a></div><div class="question-cell" id="nav-question-135"><a href="#question-135"><div class="question-number">136</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-136"><a href="#question-136"><div class="question-number">137</div></a></div><div class="question-cell" id="nav-question-137"><a href="#question-137"><div class="question-number">138</div></a></div><div class="question-cell" id="nav-question-138"><a href="#question-138"><div class="question-number">139</div></a></div><div class="question-cell" id="nav-question-139"><a href="#question-139"><div class="question-number">140</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-140"><a href="#question-140"><div class="question-number">141</div></a></div><div class="question-cell" id="nav-question-141"><a href="#question-141"><div class="question-number">142</div></a></div><div class="question-cell" id="nav-question-142"><a href="#question-142"><div class="question-number">143</div></a></div><div class="question-cell" id="nav-question-143"><a href="#question-143"><div class="question-number">144</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-144"><a href="#question-144"><div class="question-number">145</div></a></div><div class="question-cell" id="nav-question-145"><a href="#question-145"><div class="question-number">146</div></a></div><div class="question-cell" id="nav-question-146"><a href="#question-146"><div class="question-number">147</div></a></div><div class="question-cell" id="nav-question-147"><a href="#question-147"><div class="question-number">148</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-148"><a href="#question-148"><div class="question-number">149</div></a></div><div class="question-cell" id="nav-question-149"><a href="#question-149"><div class="question-number">150</div></a></div><div class="question-cell" id="nav-question-150"><a href="#question-150"><div class="question-number">151</div></a></div><div class="question-cell" id="nav-question-151"><a href="#question-151"><div class="question-number">152</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-152"><a href="#question-152"><div class="question-number">153</div></a></div><div class="question-cell" id="nav-question-153"><a href="#question-153"><div class="question-number">154</div></a></div><div class="question-cell" id="nav-question-154"><a href="#question-154"><div class="question-number">155</div></a></div><div class="question-cell" id="nav-question-155"><a href="#question-155"><div class="question-number">156</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-156"><a href="#question-156"><div class="question-number">157</div></a></div><div class="question-cell" id="nav-question-157"><a href="#question-157"><div class="question-number">158</div></a></div><div class="question-cell" id="nav-question-158"><a href="#question-158"><div class="question-number">159</div></a></div><div class="question-cell" id="nav-question-159"><a href="#question-159"><div class="question-number">160</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-160"><a href="#question-160"><div class="question-number">161</div></a></div><div class="question-cell" id="nav-question-161"><a href="#question-161"><div class="question-number">162</div></a></div><div class="question-cell" id="nav-question-162"><a href="#question-162"><div class="question-number">163</div></a></div><div class="question-cell" id="nav-question-163"><a href="#question-163"><div class="question-number">164</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-164"><a href="#question-164"><div class="question-number">165</div></a></div><div class="question-cell" id="nav-question-165"><a href="#question-165"><div class="question-number">166</div></a></div><div class="question-cell" id="nav-question-166"><a href="#question-166"><div class="question-number">167</div></a></div><div class="question-cell" id="nav-question-167"><a href="#question-167"><div class="question-number">168</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-168"><a href="#question-168"><div class="question-number">169</div></a></div><div class="question-cell" id="nav-question-169"><a href="#question-169"><div class="question-number">170</div></a></div><div class="question-cell" id="nav-question-170"><a href="#question-170"><div class="question-number">171</div></a></div><div class="question-cell" id="nav-question-171"><a href="#question-171"><div class="question-number">172</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-172"><a href="#question-172"><div class="question-number">173</div></a></div><div class="question-cell" id="nav-question-173"><a href="#question-173"><div class="question-number">174</div></a></div><div class="question-cell" id="nav-question-174"><a href="#question-174"><div class="question-number">175</div></a></div><div class="question-cell" id="nav-question-175"><a href="#question-175"><div class="question-number">176</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-176"><a href="#question-176"><div class="question-number">177</div></a></div><div class="question-cell" id="nav-question-177"><a href="#question-177"><div class="question-number">178</div></a></div><div class="question-cell" id="nav-question-178"><a href="#question-178"><div class="question-number">179</div></a></div><div class="question-cell" id="nav-question-179"><a href="#question-179"><div class="question-number">180</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-180"><a href="#question-180"><div class="question-number">181</div></a></div><div class="question-cell" id="nav-question-181"><a href="#question-181"><div class="question-number">182</div></a></div><div class="question-cell" id="nav-question-182"><a href="#question-182"><div class="question-number">183</div></a></div><div class="question-cell" id="nav-question-183"><a href="#question-183"><div class="question-number">184</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-184"><a href="#question-184"><div class="question-number">185</div></a></div><div class="question-cell" id="nav-question-185"><a href="#question-185"><div class="question-number">186</div></a></div><div class="question-cell" id="nav-question-186"><a href="#question-186"><div class="question-number">187</div></a></div><div class="question-cell" id="nav-question-187"><a href="#question-187"><div class="question-number">188</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-188"><a href="#question-188"><div class="question-number">189</div></a></div><div class="question-cell" id="nav-question-189"><a href="#question-189"><div class="question-number">190</div></a></div><div class="question-cell" id="nav-question-190"><a href="#question-190"><div class="question-number">191</div></a></div><div class="question-cell" id="nav-question-191"><a href="#question-191"><div class="question-number">192</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-192"><a href="#question-192"><div class="question-number">193</div></a></div><div class="question-cell" id="nav-question-193"><a href="#question-193"><div class="question-number">194</div></a></div><div class="question-cell" id="nav-question-194"><a href="#question-194"><div class="question-number">195</div></a></div><div class="question-cell" id="nav-question-195"><a href="#question-195"><div class="question-number">196</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-196"><a href="#question-196"><div class="question-number">197</div></a></div><div class="question-cell" id="nav-question-197"><a href="#question-197"><div class="question-number">198</div></a></div><div class="question-cell" id="nav-question-198"><a href="#question-198"><div class="question-number">199</div></a></div><div class="question-cell" id="nav-question-199"><a href="#question-199"><div class="question-number">200</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-200"><a href="#question-200"><div class="question-number">201</div></a></div><div class="question-cell" id="nav-question-201"><a href="#question-201"><div class="question-number">202</div></a></div><div class="question-cell" id="nav-question-202"><a href="#question-202"><div class="question-number">203</div></a></div><div class="question-cell" id="nav-question-203"><a href="#question-203"><div class="question-number">204</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-204"><a href="#question-204"><div class="question-number">205</div></a></div><div class="question-cell" id="nav-question-205"><a href="#question-205"><div class="question-number">206</div></a></div><div class="question-cell" id="nav-question-206"><a href="#question-206"><div class="question-number">207</div></a></div><div class="question-cell" id="nav-question-207"><a href="#question-207"><div class="question-number">208</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-208"><a href="#question-208"><div class="question-number">209</div></a></div><div class="question-cell" id="nav-question-209"><a href="#question-209"><div class="question-number">210</div></a></div><div class="question-cell" id="nav-question-210"><a href="#question-210"><div class="question-number">211</div></a></div><div class="question-cell" id="nav-question-211"><a href="#question-211"><div class="question-number">212</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-212"><a href="#question-212"><div class="question-number">213</div></a></div><div class="question-cell" id="nav-question-213"><a href="#question-213"><div class="question-number">214</div></a></div><div class="question-cell" id="nav-question-214"><a href="#question-214"><div class="question-number">215</div></a></div><div class="question-cell" id="nav-question-215"><a href="#question-215"><div class="question-number">216</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-216"><a href="#question-216"><div class="question-number">217</div></a></div><div class="question-cell" id="nav-question-217"><a href="#question-217"><div class="question-number">218</div></a></div><div class="question-cell" id="nav-question-218"><a href="#question-218"><div class="question-number">219</div></a></div><div class="question-cell" id="nav-question-219"><a href="#question-219"><div class="question-number">220</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-220"><a href="#question-220"><div class="question-number">221</div></a></div><div class="question-cell" id="nav-question-221"><a href="#question-221"><div class="question-number">222</div></a></div><div class="question-cell" id="nav-question-222"><a href="#question-222"><div class="question-number">223</div></a></div><div class="question-cell" id="nav-question-223"><a href="#question-223"><div class="question-number">224</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-224"><a href="#question-224"><div class="question-number">225</div></a></div><div class="question-cell" id="nav-question-225"><a href="#question-225"><div class="question-number">226</div></a></div><div class="question-cell" id="nav-question-226"><a href="#question-226"><div class="question-number">227</div></a></div><div class="question-cell" id="nav-question-227"><a href="#question-227"><div class="question-number">228</div></a></div></div><div class="question-row"><div class="question-cell" id="nav-question-228"><a href="#question-228"><div class="question-number">229</div></a></div><div class="question-cell"><div class="empty-cell"></div></div><div class="question-cell"><div class="empty-cell"></div></div><div class="question-cell"><div class="empty-cell"></div></div></div>        </div>
-    </form>
-        <button id="submitAll">Final Score</button>
-    <button id="doAgainBtn">Again</button>
-    <button id="homePage">Home</button><br>
-</div>
-
-<!-- Add to your existing JavaScript -->
-<script>
-    // Add validation for file selection
-    document.querySelector('.submit-files').addEventListener('click', function(e) {
-        const checkedBoxes = document.querySelectorAll('input[name="selectedFiles[]"]:checked');
-        if (checkedBoxes.length === 0) {
-            e.preventDefault();
-            alert('Please select at least one question set.');
-        }
-    });
-
-    // Your existing JavaScript code...
-</script>
-<script>
-// Check if instant feedback mode is enabled
-const instantFeedbackEnabled = true;
-
-// Modify submit behavior for instant feedback mode
-document.getElementById('submitAll').addEventListener('click', function() {
-    if (instantFeedbackEnabled) {
-        // In instant feedback mode, we don't need to show answers again
-        // Just calculate and show final score
-        calculateFinalScore();
-    } else {
-        // Original behavior - show answers and calculate score
-        showAnswersAndCalculateScore();
-    }
-    
-    // Common behavior for both modes
-    this.style.display = 'none';
-    document.getElementById('doAgainBtn').style.visibility = 'visible';
-    document.getElementById('homePage').style.visibility = 'visible';
-});
-
-// Function for instant feedback mode - just calculate final score
-function calculateFinalScore() {
-    const numQuestions = 229;
-    let values = [];
-    
-    // Collect all answers
-    for (let q = 0; q < numQuestions; q++) {
-        let form = document.getElementById(`form-${q}`);
-        let radios = form.querySelectorAll('input[type="radio"]');
-        let answered = false;
-
-        radios.forEach(radio => {
-            if (radio.checked) {
-                values.push(radio.value);
-                answered = true;
-            }
-        });
-
-        if (!answered) {
-            values.push('0');
-        }
-    }
-    
-    // Calculate and display final score
-    let countOfOnes = values.filter(value => value == '1').length;
-    let percentage = (countOfOnes / values.length) * 100;
-    document.getElementById('score-text').textContent = `Final Score: ${percentage.toFixed(2)}%`;
-    document.getElementById('score-text').style.visibility = 'visible';
-    
-    // Update navigation boxes to show final results
-    updateNavigationBoxes(values);
-}
-
-// Function for regular mode - show answers and calculate score  
-function showAnswersAndCalculateScore() {
-    const numQuestions = 229;
-    
-    // Create an array with form IDs
-    const formIds = Array.from({length: numQuestions}, (v, k) => `form-${k}`);
-    let allFormData = {};
-
-    // Collect form data
-    formIds.forEach(function(formId) {
-        let form = document.getElementById(formId);
-        let formData = new FormData(form);
-        
-        for (let [key, value] of formData.entries()) {
-            allFormData[key] = value;
-        }
-    });
-
-    let values = [];
-    
-    // Process answers
-    for (let q = 0; q < numQuestions; q++) {
-        let form = document.getElementById(`form-${q}`);
-        let radios = form.querySelectorAll('input[type="radio"]');
-        let answered = false;
-
-        radios.forEach(radio => {
-            if (radio.checked) {
-                values.push(radio.value);
-                answered = true;
-            }
-        });
-
-        if (!answered) {
-            values.push('0');
-        }
-    }
-    
-    // Calculate score
-    let countOfOnes = values.filter(value => value == '1').length;
-    let percentage = (countOfOnes / values.length) * 100;
-    document.getElementById('score-text').textContent = `Score: ${percentage.toFixed(2)}%`;
-    document.getElementById('score-text').style.visibility = 'visible';
-
-    // Update navigation and show correct answers
-    updateNavigationBoxes(values);
-    showCorrectAnswers();
-}
-
-// Common function to update navigation boxes
-function updateNavigationBoxes(values) {
-    const numQuestions = 229;
-    
-    for (let i = 0; i < numQuestions; i++) {
-        var navBox = document.getElementById('nav-question-' + i);
-        if (navBox) {
-            var questionNumberElement = navBox.querySelector('.question-number');
-            questionNumberElement.classList.remove('answered');
-            
-            if (values[i] == '1') {
-                questionNumberElement.classList.add('correct');
-                document.getElementById('ok2-text'+i).style.visibility = 'visible';
-            } else {
-                questionNumberElement.classList.add('incorrect');
-                document.getElementById('ok-text'+i).style.visibility = 'visible';
-            }
-        }
-    }
-}
-
-// Function to show correct answers (only for regular mode)
-function showCorrectAnswers() {
-    const options = document.querySelectorAll('input[type="radio"]');
-    
-    options.forEach(function(option) {
-        if (option.getAttribute('data-correct2') === '1') {
-            option.parentElement.classList.add('correct-answer');
-        }
-    });
-}
-</script>
-
-
-
-<style>
-
-.question-selection-card {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin: 20px 0;
-    overflow: hidden;
-}
-
-.question-selection-header {
-    padding: 16px 20px;
-    border-bottom: 1px solid #e5e7eb;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.question-selection-header .title {
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: #374151;
-}
-
-.question-selection-header .total-questions {
-    font-size: 0.875rem;
-    color: #6b7280;
-}
-
-.question-selection-content {
-    padding: 24px;
-}
-
-.input-group {
-    display: flex;
-    gap: 24px;
-    flex-wrap: wrap;
-    margin-bottom: 24px;
-}
-
-.form-control {
-    display: inline;
-    flex: 1;
-    min-width: 12px;
-}
-
-.form-control label {
-    display: block;
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #374151;
-    margin-bottom: 8px;
-}
-
-.form-control input {
-    width: 100%;
-    padding: 8px 8px;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    transition: all 0.2s;
-}
-
-.form-control input:focus {
-    outline: none;
-    border-color: rgb(47, 116, 206);
-    box-shadow: 0 0 0 2px rgba(47, 116, 206, 0.2);
-}
-
-.button-group {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 16px;
-}
-
-.all-questions-btn {
-    padding: 8px 16px;
-    background-color: rgb(47, 116, 206);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.all-questions-btn:hover {
-    background-color: rgb(35, 87, 155);
-}
-
-.checkbox-label2 {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-}
-
-.label-text2 {
-    margin-left: 5px;
-}
-
-.form-control2 {
-    margin: 10px 0;
-}
-
-.reload-button {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: #f3f4f6;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.2s;
-}
-
-.reload-button:hover {
-    background-color: #e5e7eb;
-}
-
-.reload-icon {
-    font-size: 1.25rem;
-    color: #6b7280;
-}
-
-header {
-    display: flex; /* Use flexbox to align items on the same line */
-    align-items: center; /* Align items vertically */
-    background-color: #f4f4f4;
-    padding: 20px;
-    text-align: center;
-}
-
-.back-arrow {
-    font-size: 40px; /* Adjust size as needed */
-    margin-right: 20px; /* Space between arrow and text */
-    cursor: pointer; /* Change mouse cursor to indicate clickable */
-}
-
-header h1 {
-    margin: 0; /* Remove default margin */
-    color: #333;
-    flex-grow: 1; /* Allow the h1 to take up remaining space */
-    text-align: left; /* Align the text to the left */
-}
-
-.main-container {
-    margin: 0 auto; /* Center the container */
-    max-width: 800px; /* Or whatever your specific width is */
-    padding: 20px; /* Optional: Add some padding */
-}
-
-.question-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-items: flex-start;
-    margin-bottom: 10px;
-    margin-bottom: 10px;
-    
-}
-
-.question-row {
-    display: flex;
-    flex-wrap: wrap;
-    
-}
-
-.question-cell {
-    flex: 1; /* Allow cells to grow and shrink */
-    max-width: calc(20% - 10px); /* Adjust as needed */
-    margin-left: 10px;
-    margin-bottom: 10px;
-}
-
-.empty-cell {
-    width: 30px;
-    height: 30px;
-    background-color: whitesmoke;
-    color: rgb(47, 116, 206);
-    text-align: center;
-    line-height: 30px;
-    border-radius: 50%;
-    border-color: #333;
-    display: inline-block;
-    visibility: hidden; /* Makes the cell invisible but maintains its space */
-}
-
-.question-number {
-    width: 30px;
-    height: 30px;
-    background-color: whitesmoke;
-    color: rgb(47, 116, 206);
-    text-align: center;
-    line-height: 30px;
-    border-radius: 50%;
-    border-color: rgb(47, 116, 206);
-    display: inline-block;
-}
-
-.question-number.answered {
-    background-color: rgb(47, 116, 206);; /* Background color for answered questions */
-    color: whitesmoke;
-}
-
-.question-number.correct {
-    background-color: green;; /* Background color for answered questions */
-    color: whitesmoke;
-}
-
-.question-number.incorrect {
-    background-color: red;; /* Background color for answered questions */
-    color: whitesmoke;
-}
-
-.content {
-    margin: 0 auto; /* Center the content horizontally */
-    max-width: 800px; /* Set a maximum width for the content */
-}
-
-/* Add your CSS styles here */
-.question-header {
-    width: 100%; /* Ensure the header takes the full width of its container */
-}
-
-.ok-text {
-    white-space: nowrap; /* Prevent "ok" from wrapping */
-    visibility: hidden;
-    color: red;
-    font-weight: bold;
-    font-size: x-large;
-}
-
-.ok2-text {
-    white-space: nowrap; /* Prevent "ok" from wrapping */
-    visibility: hidden;
-    color: green;
-    font-weight: bold;
-    font-size: x-large;
-}
-
-.question-container {
-    border-bottom: 1px solid #ccc; /* Add a border between questions */
-    padding-bottom: 20px; /* Add padding to space out questions */
-    position: relative;
-}
-
-.correct-answer {
-    background-color: rgba(144, 238, 144, 0.5); /* lightgreen with 30% opacity */
-    
-}
-
-.incorrect-answer {
-    background-color: rgba(240, 128, 128, 0.5); /* lightcoral with 30% opacity */
-    
-}
-
-form label {
-    display: block; /* Each label on its own line */
-    margin-top: 10px; /* Increase margin-top for space between question and first answer */
-}
-
-button {
-    background-color: rgb(47, 116, 206);; /* Example button color */
-    color: white;
-    padding: 8px 15px;
-    border: 3px solid rgb(35, 87, 155);
-    cursor: pointer;
-    margin-top: 20px; /* Add margin to separate questions from button */
-    box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.7);
-}
-
-.navigation-board {
-    position: fixed;
-    right: 0px;
-    top: 0;
-    bottom: 0;
-    width: 250px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    background-color: lightgrey;
-    overflow-y: auto; /* Enable scrolling if navigation board overflows vertically */
-    z-index: 1; /* Set a z-index to ensure the navigation board is stacked behind the content */
-    opacity: 0.9;
-}
-
-.navigation-board ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.navigation-board ul li {
-    margin-bottom: 5px;
-}
-
-.navigation-board ul li a {
-    text-decoration: none;
-    color: #333;
-}
-
-.navigation-board ul li a.answered {
-    color: green;
-}
-
-.score-text {
-    margin-bottom: 20px;
-    font-size: x-large;
-    font-weight: bold;
-    visibility: hidden;
-    text-decoration: underline;
-    color: rgb(47, 116, 206);
-}
-
-#toggleBtn {
-    background-color: rgb(47, 116, 206);
-    color: white;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.2s, transform 0.2s;
-    position: fixed;
-    right: 10px;
-    top: 90%;
-    transform: translateY(-50%);
-    z-index: 2;
-    box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.7);
-}
-
-#toggleBtn:hover {
-    background-color: rgb(35, 87, 155);
-    transform: translateY(-52%); /* Slight upward movement on hover */
-}
-
-#toggleBtn:active {
-    transform: translateY(-50%); /* Return to original position when clicked */
-}
-
-#submitAll.finished {
-    visibility: hidden;
-}
-
-#doAgainBtn {
-    visibility: hidden;
-    padding: 8px 15px;
-}
-
-#doAgainBtn.finished {
-    visibility: visible;
-}
-
-#homePage {
-    visibility: hidden;
-}
-
-#homePage.finished {
-    visibility: visible;
-}
-
-#navigationForm button {
-    display: block; /* Make the button a block-level element */
-    margin-left: auto; /* Automatically adjust the left margin to push the button to the right */
-    margin-right: 0; /* Keep the button right-aligned */
-    margin-top: 20px; /* Maintain a top margin, adjust as needed */
-}
-
-
-#navigationBoard {
-    display: none; /* Hide the navigation board by default */
-    position: fixed; /* Position the navigation board relative to the button */
-    top: 15%;
-    bottom: 15%; /* Adjust the top position as needed */
-    right: 10px; /* Align the navigation board with the button */
-    z-index: 1; /* Ensure the navigation board stays above other content */
-}
-
-.form-row {
-    display: flex; /* Enables flexbox layout */
-    align-items: center; /* Centers items vertically within their line */
-    justify-content: start; /* Aligns items to the start of the container */
-    gap: 20px; /* Spacing between each item */
-}
-
-/* Adjust the width of the input fields to ensure they don't stretch too much */
-.form-group input[type="number"] {
-    width: auto; /* Override any width that might stretch the input fields */
-}
-
-/* Add a container around the button to align it with the input fields */
-.form-group-button {
-    margin-left: auto; /* Pushes the button to the end of the flex container */
-}
-
-/* This wrapper ensures the labels are aligned with the inputs */
-.form-group {
-    display: flex;
-    flex-direction: column; /* Stack label on top of input */
-    margin-bottom: 5px; /* Optional: Add some space between the form groups */
-}
-
-/* Style for individual labels to ensure they don't take up too much space */
-.form-group label {
-    margin-bottom: 5px; /* Space between label and input */
-}
-
-.level-selection {
-    margin: 1px;
-}
-
-.level-selection label, .level-selection input[type="button"] {
-    display: inline-block;
-    margin: 1px;
-    padding: 5px 10px;
-    border: 1px solid black;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: white;
-    font-size: inherit;
-    font-family: inherit;
-}
-
-.level-selection input[type="radio"] {
-    display: none;
-}
-
-.level-selection input[type="radio"]:checked + label {
-    background-color: lightgrey;
-}
-
-.level-selection input[type="button"]:hover {
-    background-color: lightgrey;
-}
-
-#doAgainBtn, #submitAll, #homePage {
-    background-color: rgb(47, 116, 206); /* Example button color */
-    color: white;
-    padding: 8px 15px;
-    border: none; /* Adjust as needed */
-    cursor: pointer;
-    margin-top: 20px; /* Add margin to separate from other elements */
-    box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.7);
-    border-radius: 4px; /* Optional: Adds rounded corners */
-}
-
-/* For hover effect */
-#doAgainBtn:hover, #submitAll:hover, #homePage:hover {
-    background-color: rgb(35, 87, 155); /* Darker shade for hover effect */
-}
-
-.reload-button {
-    background-color: white; /* Set the background color to white */
-    color: gray; /* Set the symbol color to gray */
-    border: none; /* Remove the border */
-    padding: 8px 15px; /* Adjust the padding as needed */
-    border-radius: 4px; /* Rounded corners for the button */
-    display: inline-flex; /* Use flexbox for centering content */
-    align-items: center; /* Center content vertically */
-    justify-content: center; /* Center content horizontally */
-    font-size: 24px; /* Adjust the font-size for the icon */
-    box-shadow: none; /* Remove the box shadow */
-    transition: background-color 0.3s ease; /* Animation for hover effect */
-}
-
-/* Add the reload symbol to the button */
-.reload-button::before {
-    content: '\21BB'; /* The Unicode character for the reload symbol */
-}
-
-/* Hover effect */
-.reload-button:hover {
-    background-color: #f2f2f2; /* Slightly darker background on hover */
-    color: darkgray; /* Optionally change the symbol color on hover */
-}
-/* Instant feedback mode styles */
-.instant-feedback-indicator {
-    position: absolute;
-    right: 40px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 1.2em;
-    font-weight: bold;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-}
-
-.instant-feedback-indicator.show {
-    opacity: 1;
-}
-
-.instant-feedback-indicator.correct {
-    color: #28a745;
-}
-
-.instant-feedback-indicator.incorrect {
-    color: #dc3545;
-}
-
-/* Immediate feedback for radio button options */
-.question-container.instant-feedback label.selected-correct {
-    background-color: rgba(40, 167, 69, 0.2);
-    border-left: 4px solid #28a745;
-    transition: all 0.3s ease;
-}
-
-.question-container.instant-feedback label.selected-incorrect {
-    background-color: rgba(220, 53, 69, 0.2);
-    border-left: 4px solid #dc3545;
-    transition: all 0.3s ease;
-}
-
-.question-container.instant-feedback label.show-correct {
-    background-color: rgba(40, 167, 69, 0.1);
-    border-left: 2px solid #28a745;
-    transition: all 0.3s ease;
-}
-
-</style>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const toggleBtn = document.getElementById('toggleBtn');
-        const navigationBoard = document.getElementById('navigationBoard');
-
-        // Toggle navigation board visibility
-        toggleBtn.addEventListener('click', function() {
-            if (navigationBoard.style.display === 'none' || navigationBoard.style.display === '') {
-                navigationBoard.style.display = 'block';
-            } else {
-                navigationBoard.style.display = 'none';
-            }
-        });
-
-        // Function to clear all backgrounds
-        function clearBackgrounds() {
-            document.querySelectorAll('label').forEach(function(label) {
-                label.style.backgroundColor = ''; // Clear background color
-            });
-        }
-
-        // Function to check answers
-        function checkAnswers() {
-            clearBackgrounds(); // Clear all backgrounds first
-
-            // Find all checked radio buttons
-            var checkedRadios = document.querySelectorAll('input[type="radio"]:checked');
-            
-            // Loop through each checked radio button
-            checkedRadios.forEach(function(radio) {
-                // Check if the selected option is correct
-                if (radio.getAttribute('data-correct2') === '1') {
-                    // Correct answer - set background to lightgreen
-                    radio.parentNode.style.backgroundColor = 'rgba(144, 238, 144, 0.5)';
-                } else {
-                    // Incorrect answer - set background to lightcoral
-                    radio.parentNode.style.backgroundColor = 'rgba(240, 128, 128, 0.5)';
-                }
-            });
-        }
-
-        // Add click event listener to the check answers button
-        document.getElementById('submitAll').addEventListener('click', checkAnswers);
-    });
-</script>
-
-<script>
-    function adjustQuestionRange() {
-        const levelBasic = document.getElementById('levelBasic').checked;
-        const levelAll = document.getElementById('levelAll').checked;
-        const level3 = document.getElementById('level3').checked;
-        const startQuestionInput = document.getElementById('startQuestion');
-        const endQuestionInput = document.getElementById('endQuestion');
-
-        let startQuestion = 1;
-        let endQuestion = 229;
-
-        if (levelBasic && !levelAll && !level3) {
-            startQuestion = 1;
-            endQuestion = 58;
-        } else if (levelAll && !levelBasic && !level3) {
-            startQuestion = 59;
-            endQuestion = 127;
-        } else if (!levelAll && !levelBasic && level3) {
-            startQuestion = 128;
-            endQuestion = 229;
-        }
-
-        startQuestionInput.value = startQuestion;
-        endQuestionInput.value = endQuestion;
-    }
-</script>
-
-<script>
-function highlightNavBox(questionNumber) {
-    // Find the navigation box for this question
-    var navBox = document.getElementById('nav-question-' + questionNumber);
-    if (navBox) {
-        // Find the .question-number element within the navBox
-        var questionNumberElement = navBox.querySelector('.question-number');
-        if (questionNumberElement) {
-            // Add the 'answered' class to change its background color to blue
-            questionNumberElement.classList.add('answered');
-        }
-    }
-}
-</script>
-
-<script>
-  document.getElementById('homePage').addEventListener('click', function() {
-    window.location.href = 'index.php';
-  });
-</script>
-
-<script>
-// For the Start Test button
-document.getElementById('testForm').addEventListener('submit', function(event) {
-    // Modify the URL to remove the hash
-    history.pushState("", document.title, window.location.pathname);
-    window.scrollTo(0, 0);
-});
-
-// For the doAgainBtn button
-document.getElementById('doAgainBtn').addEventListener('click', function() {
-    // Modify the URL to remove the hash
-    history.pushState("", document.title, window.location.pathname);
-    // Assuming you want to submit the form or refresh the page
-    document.getElementById('testForm').submit(); // Modify based on your actual logic
-});
-</script>
-
-<script>
-        function toggleFileSelection() {
-            const fileSelection = document.querySelector('.file-selection');
-            fileSelection.classList.toggle('collapsed');
-
-            // Adjust max-height dynamically based on content
-            const content = fileSelection.querySelector('.file-selection-content');
-            if (!fileSelection.classList.contains('collapsed')) {
-                const contentHeight = content.scrollHeight;
-                content.style.maxHeight = contentHeight + 'px';
-            } else {
-                content.style.maxHeight = '0';
-            }
-        }
-
-        // Update selected count
-        function updateSelectedCount() {
-            const checkedBoxes = document.querySelectorAll('input[name="selectedFiles[]"]:checked');
-            document.getElementById('selectedCount').textContent = checkedBoxes.length;
-        }
-
-        // Initial count update and setup
-        document.addEventListener('DOMContentLoaded', function() {
-            updateSelectedCount();
-
-            // Add listeners to checkboxes
-            const checkboxes = document.querySelectorAll('input[name="selectedFiles[]"]');
-            checkboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', updateSelectedCount);
-            });
-
-            // Set initial height for animation
-            const content = document.querySelector('.file-selection-content');
-            if (!document.querySelector('.file-selection').classList.contains('collapsed')) {
-                content.style.maxHeight = content.scrollHeight + 'px';
-            }
-        });
-
-        // Form submission validation
-        document.querySelector('.submit-files').addEventListener('click', function(e) {
-            const checkedBoxes = document.querySelectorAll('input[name="selectedFiles[]"]:checked');
-            if (checkedBoxes.length === 0) {
-                e.preventDefault();
-                alert('Please select at least one question set.');
-            }
-        });
-
-        function selectAllQuestions() {
-            const totalQuestions = 229;
-            document.getElementById('startQuestion').value = 1;
-            document.getElementById('endQuestion').value = totalQuestions;
-            document.getElementById('numQuestions').value = totalQuestions;
-        }
-    </script>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const totalQuestions = 229;
-        const startQuestionInput = document.getElementById('startQuestion');
-        const endQuestionInput = document.getElementById('endQuestion');
-        const numQuestionsInput = document.getElementById('numQuestions');
-
-        function validateInputs() {
-            // Get current values
-            let start = parseInt(startQuestionInput.value) || 1;
-            let end = parseInt(endQuestionInput.value) || totalQuestions;
-            let num = parseInt(numQuestionsInput.value) || 1;
-
-            // Ensure start is within bounds
-            start = Math.max(1, Math.min(start, totalQuestions));
-            startQuestionInput.value = start;
-
-            // Ensure end is within bounds and not less than start
-            end = Math.max(start, Math.min(end, totalQuestions));
-            endQuestionInput.value = end;
-
-            // Calculate maximum possible questions for current range
-            const maxPossibleQuestions = end - start + 1;
-
-            // Ensure num questions doesn't exceed available range
-            num = Math.min(num, maxPossibleQuestions);
-            numQuestionsInput.value = num;
-        }
-
-        // Add event listeners for all inputs
-        startQuestionInput.addEventListener('change', validateInputs);
-        endQuestionInput.addEventListener('change', validateInputs);
-        numQuestionsInput.addEventListener('change', validateInputs);
-
-        // Validate on form submission
-        document.getElementById('testForm').addEventListener('submit', function(e) {
-            validateInputs();
-        });
-    });
-
-    function selectAllQuestions() {
-        const totalQuestions = 229;
-        document.getElementById('startQuestion').value = 1;
-        document.getElementById('endQuestion').value = totalQuestions;
-        document.getElementById('numQuestions').value = totalQuestions;
-    }
-    </script>
-    <script>
-    // Instant Feedback Mode handler
-    function handleInstantFeedback(questionNumber, radioElement) {
-        const questionContainer = document.getElementById('question-' + questionNumber);
-        const instantFeedbackIndicator = document.getElementById('instant-feedback-' + questionNumber);
-        const isCorrect = radioElement.getAttribute('data-correct2') === '1';
-        
-        // Clear previous feedback styles from all labels in this question
-        const allLabels = questionContainer.querySelectorAll('label');
-        allLabels.forEach(label => {
-            label.classList.remove('selected-correct', 'selected-incorrect', 'show-correct');
-        });
-        
-        // Apply feedback to selected option
-        const selectedLabel = radioElement.parentElement;
-        if (isCorrect) {
-            selectedLabel.classList.add('selected-correct');
-            instantFeedbackIndicator.textContent = '✓';
-            instantFeedbackIndicator.className = 'instant-feedback-indicator show correct';
-        } else {
-            selectedLabel.classList.add('selected-incorrect');
-            instantFeedbackIndicator.textContent = '✗';
-            instantFeedbackIndicator.className = 'instant-feedback-indicator show incorrect';
-            
-            // Show the correct answer
-            allLabels.forEach(label => {
-                const radio = label.querySelector('input[type="radio"]');
-                if (radio && radio.getAttribute('data-correct2') === '1') {
-                    label.classList.add('show-correct');
-                }
-            });
-        }
-    }
-    </script></body></html>
