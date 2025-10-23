@@ -428,6 +428,79 @@
         <button id="homePage">Home</button>
     </div>
     <script>
+        <script>
+// ==========================
+// LOAD CSV AND DISPLAY QUIZ
+// ==========================
+
+// Bắt sự kiện khi nhấn nút "Load Selected Sets"
+document.querySelector('.submit-files').addEventListener('click', async function(e) {
+    e.preventDefault();
+    
+    const checkedFiles = Array.from(document.querySelectorAll('input[name="selectedFiles[]"]:checked'));
+    if (checkedFiles.length === 0) {
+        alert('Please select at least one question set.');
+        return;
+    }
+
+    // Xóa nội dung cũ trong phần content
+    const content = document.querySelector('.content');
+    content.innerHTML = "<p style='text-align:center;color:#777;'>Loading questions...</p>";
+
+    let allQuestions = [];
+    
+    // Đọc và hợp nhất nội dung từ các file CSV được chọn
+    for (const fileInput of checkedFiles) {
+        const filePath = fileInput.value;
+        try {
+            const response = await fetch(filePath);
+            if (!response.ok) throw new Error(`Cannot load ${filePath}`);
+            const text = await response.text();
+            const rows = text.trim().split('\n').slice(1); // bỏ dòng tiêu đề
+            rows.forEach(row => {
+                const parts = row.split(',');
+                if (parts.length >= 6) {
+                    allQuestions.push({
+                        question: parts[0],
+                        options: [parts[1], parts[2], parts[3], parts[4]],
+                        answer: parts[5].trim().toUpperCase()
+                    });
+                }
+            });
+        } catch (error) {
+            console.error(error);
+            alert(`Error loading ${filePath}`);
+        }
+    }
+
+    // Tạo HTML hiển thị các câu hỏi
+    if (allQuestions.length === 0) {
+        content.innerHTML = "<p style='text-align:center;color:red;'>No questions found in selected files.</p>";
+        return;
+    }
+
+    let html = "";
+    allQuestions.forEach((q, index) => {
+        const letters = ["A", "B", "C", "D"];
+        html += `<form id="form-${index}" class="question-form">`;
+        html += `<h3>${index + 1}. ${q.question}</h3>`;
+        q.options.forEach((opt, i) => {
+            const isCorrect = (letters[i] === q.answer);
+            html += `
+                <label>
+                    <input type="radio" name="q${index}" 
+                           value="${isCorrect ? 1 : 0}" 
+                           data-correct2="${isCorrect ? 1 : 0}">
+                    ${letters[i]}. ${opt}
+                </label><br>`;
+        });
+        html += `</form>`;
+    });
+
+    content.innerHTML = html;
+});
+</script>
+
         // Submit file selection validation
         document.querySelector('.submit-files').addEventListener('click', function(e) {
             const checked = document.querySelectorAll('input[name="selectedFiles[]"]:checked');
