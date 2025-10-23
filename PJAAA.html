@@ -362,3 +362,51 @@
                 </form>
             </div>
         </div>
+        <div class="question-selection-card">
+            <div class="question-selection-header">
+                <div class="title">Question Range Selection</div>
+                <div class="total-questions">Selected modules have 229 questions</div>
+            </div>
+
+            <div class="question-selection-content">
+                <form id="testForm">
+                    <div class="form-control2">
+                        <label for="fixedMode" class="file-checkbox-label">
+                            <input type="checkbox" id="fixedMode" name="fixedMode" checked>
+                            <span class="label-text2">Fixed Mode</span>
+                        </label>
+                    </div>
+
+                    <div class="form-control2">
+                        <label for="instantFeedback" class="file-checkbox-label">
+                            <input type="checkbox" id="instantFeedback" name="instantFeedback" checked>
+                            <span class="label-text2">Instant Feedback Mode</span>
+                        </label>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="form-control">
+                            <label for="startQuestion">Start Question</label>
+                            <input type="number" id="startQuestion" min="1" max="229" value="1" required>
+                        </div>
+
+                        <div class="form-control">
+                            <label for="endQuestion">End Question</label>
+                            <input type="number" id="endQuestion" min="1" max="229" value="229" required>
+                        </div>
+
+                        <div class="form-control">
+                            <label for="numQuestions">Num. Questions</label>
+                            <input type="number" id="numQuestions" min="1" max="229" value="229" required>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="all-questions-btn" onclick="selectAllQuestions()">All Questions</button>
+                        <button type="submit" class="reload-button">
+                            <span class="reload-icon"></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
